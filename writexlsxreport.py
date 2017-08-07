@@ -9,6 +9,7 @@ The xls file has 4 sheets.\n
 """
 
 import xlsxwriter
+import createdata
 
 PHASES_DICT = {
     'RiskEvaluationKey': '1. Evaluation des Risques',
@@ -134,17 +135,11 @@ def write_object_status_to_report(object_dictionnary,
                          row)
 
 
-# TODO: Changer ceci car c'est une redite des valeurs qui sont dans le module "createdata".
-NOT_EVALUATED_PHASE = 'Not Evaluated'
-NOT_STARTED_PHASE = 'Not Started'
-IN_PROGRESS_PHASE = 'In Progress'
-DONE_PHASE = 'Done'
-
 # TODO: A mutualiser car c'est très mauvais en terme de perfs de faire un parcours de tableau à chaque fois.
 def count_done_objects(objects_dictionnary_array):
     done_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == DONE_PHASE:
+        if iot_object['ObjectState'] == createdata.DONE_PHASE:
             done_objects_count = done_objects_count + 1
 
     return done_objects_count
@@ -153,7 +148,7 @@ def count_done_objects(objects_dictionnary_array):
 def count_in_progress_objects(objects_dictionnary_array):
     in_progress_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == IN_PROGRESS_PHASE:
+        if iot_object['ObjectState'] == createdata.IN_PROGRESS_PHASE:
             in_progress_objects_count = in_progress_objects_count + 1
 
     return in_progress_objects_count
@@ -162,7 +157,7 @@ def count_in_progress_objects(objects_dictionnary_array):
 def count_not_started_objects(objects_dictionnary_array):
     not_started_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == NOT_STARTED_PHASE:
+        if iot_object['ObjectState'] == createdata.NOT_STARTED_PHASE:
             not_started_objects_count = not_started_objects_count + 1
 
     return not_started_objects_count
@@ -171,7 +166,7 @@ def count_not_started_objects(objects_dictionnary_array):
 def count_not_evaluated_objects(objects_dictionnary_array):
     not_evaluated_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == NOT_EVALUATED_PHASE:
+        if iot_object['ObjectState'] == createdata.NOT_EVALUATED_PHASE:
             not_evaluated_objects_count = not_evaluated_objects_count + 1
 
     return not_evaluated_objects_count
