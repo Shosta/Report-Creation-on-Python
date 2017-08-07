@@ -1,7 +1,8 @@
 """
 Write the eIoT report in an Xlsx file.\n
 
-The xls file has 4 sheets.\n
+The xls file has 4 sheets.
+
 1. The first sheet describes all the objects.\n
 2. The second sheet decribes the objects that are currently in Evaluation.\n
 3. The third sheet decribes the objects that are currently in Qualification.\n
@@ -9,7 +10,7 @@ The xls file has 4 sheets.\n
 """
 
 import xlsxwriter
-import createdata
+import variables
 
 PHASES_DICT = {
     'RiskEvaluationKey': '1. Evaluation des Risques',
@@ -67,11 +68,11 @@ def write_line_to_report(project_name_string,
     excel_sheet.write(row, column+2, security_process_phase_string, border)
 
     # Add format to the Object State row => Red, Amber, Green.
-    if object_state_string == 'Not Started' or object_state_string == 'Not Evaluated':
+    if object_state_string == variables.NOT_STARTED_PHASE or object_state_string == variables.NOT_EVALUATED_PHASE:
         excel_sheet.write(row, column+3, object_state_string, red_bold)
-    elif object_state_string == 'In Progress':
+    elif object_state_string == variables.IN_PROGRESS_PHASE:
         excel_sheet.write(row, column+3, object_state_string, orange_bold)
-    elif object_state_string == 'Done':
+    elif object_state_string == variables.DONE_PHASE:
         excel_sheet.write(row, column+3, object_state_string, green_bold)
 
     excel_sheet.write(row, column+4, person_in_charge, border)
@@ -135,38 +136,65 @@ def write_object_status_to_report(object_dictionnary,
                          row)
 
 
-# TODO: A mutualiser car c'est très mauvais en terme de perfs de faire un parcours de tableau à chaque fois.
 def count_done_objects(objects_dictionnary_array):
+    ''' Return the number of objects that are in the 'Done' security phase.
+
+    Params:
+    objects_dictionnary_array: an Array of Dictionary that describes the IoT object.
+
+    Return:
+    The number of objects that are in the 'Done' security phase.'''
     done_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == createdata.DONE_PHASE:
+        if iot_object['ObjectState'] == variables.DONE_PHASE:
             done_objects_count = done_objects_count + 1
 
     return done_objects_count
 
 
 def count_in_progress_objects(objects_dictionnary_array):
+    ''' Return the number of objects that are in the 'In Progress' security phase.
+
+    Params:
+    objects_dictionnary_array: an Array of Dictionary that describes the IoT object.
+
+    Return:
+    The number of objects that are in the 'In Progress' security phase.'''
     in_progress_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == createdata.IN_PROGRESS_PHASE:
+        if iot_object['ObjectState'] == variables.IN_PROGRESS_PHASE:
             in_progress_objects_count = in_progress_objects_count + 1
 
     return in_progress_objects_count
 
 
 def count_not_started_objects(objects_dictionnary_array):
+    ''' Return the number of objects that are in the 'Not Started' security phase.
+
+    Params:
+    objects_dictionnary_array: an Array of Dictionary that describes the IoT object.
+
+    Return:
+    The number of objects that are in the 'Not Started' security phase.'''
     not_started_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == createdata.NOT_STARTED_PHASE:
+        if iot_object['ObjectState'] == variables.NOT_STARTED_PHASE:
             not_started_objects_count = not_started_objects_count + 1
 
     return not_started_objects_count
 
 
 def count_not_evaluated_objects(objects_dictionnary_array):
+    ''' Return the number of objects that are in the 'Not Evaluated' security phase.
+
+    Params:
+    objects_dictionnary_array: an Array of Dictionary that describes the IoT object.
+
+    Return:
+    The number of objects that are in the 'Not Evaluated' security phase.'''
     not_evaluated_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == createdata.NOT_EVALUATED_PHASE:
+        if iot_object['ObjectState'] == variables.NOT_EVALUATED_PHASE:
             not_evaluated_objects_count = not_evaluated_objects_count + 1
 
     return not_evaluated_objects_count

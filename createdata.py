@@ -1,5 +1,6 @@
 """
-Populate an Array of Dictionnary Objects that describe IoT objects and their current status
+Populate an Array of Dictionnary Objects that describe IoT objects
+ and their current status
 in terms of security process.\n
 
 A Dictionnary has the following key :\n
@@ -12,6 +13,7 @@ A Dictionnary has the following key :\n
 """
 
 import os.path
+import variables
 
 PHASES_DICT = {
     '1': '1. Evaluation des Risques',
@@ -22,10 +24,7 @@ PHASES_DICT = {
     '6': '6. Delivery and Quality'
 }
 
-NOT_EVALUATED_PHASE = 'Not Evaluated'
-NOT_STARTED_PHASE = 'Not Started'
-IN_PROGRESS_PHASE = 'In Progress'
-DONE_PHASE = 'Done'
+
 SEPARATOR = ' - '
 CURRENT_DIR = '..\\.'
 
@@ -173,23 +172,35 @@ def populate_projects_array():
 
         for dirname in dirnames:
             # Add all "Not Evaluated" Objects to the result Array
-            if dirname.lower().startswith(NOT_EVALUATED_PHASE.lower()):
-                object_iot_dictionnary = get_object_from(dirpath, dirname, NOT_EVALUATED_PHASE)
+            if dirname.lower().startswith(variables.NOT_EVALUATED_PHASE.lower()):
+                object_iot_dictionnary = get_object_from(
+                    dirpath,
+                    dirname,
+                    variables.NOT_EVALUATED_PHASE)
                 objects_dictionnary_array.append(object_iot_dictionnary)
 
             # Add all "Not Started" Objects to the result Array
-            if dirname.lower().startswith(NOT_STARTED_PHASE.lower()):
-                object_iot_dictionnary = get_object_from(dirpath, dirname, NOT_STARTED_PHASE)
+            if dirname.lower().startswith(variables.NOT_STARTED_PHASE.lower()):
+                object_iot_dictionnary = get_object_from(
+                    dirpath,
+                    dirname,
+                    variables.NOT_STARTED_PHASE)
                 objects_dictionnary_array.append(object_iot_dictionnary)
 
             # Add all "In Progress" Objects to the result Array
-            if dirname.lower().startswith(IN_PROGRESS_PHASE.lower()):
-                object_iot_dictionnary = get_object_from(dirpath, dirname, IN_PROGRESS_PHASE)
+            if dirname.lower().startswith(variables.IN_PROGRESS_PHASE.lower()):
+                object_iot_dictionnary = get_object_from(
+                    dirpath,
+                    dirname,
+                    variables.IN_PROGRESS_PHASE)
                 objects_dictionnary_array.append(object_iot_dictionnary)
 
             # Add all "Done" Objects to the result Array
-            if dirname.lower().startswith(DONE_PHASE.lower()):
-                object_iot_dictionnary = get_object_from(dirpath, dirname, DONE_PHASE)
+            if dirname.lower().startswith(variables.DONE_PHASE.lower()):
+                object_iot_dictionnary = get_object_from(
+                    dirpath,
+                    dirname,
+                    variables.DONE_PHASE)
                 objects_dictionnary_array.append(object_iot_dictionnary)
 
     return objects_dictionnary_array
