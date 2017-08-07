@@ -236,4 +236,24 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
                                           delivery_sheet_row)
             delivery_sheet_row = delivery_sheet_row + 1
 
+    excel_sheet_main.write(
+        'I2',
+        'Nombre d\'objets à l\'état Done : ' +
+        str(count_done_objects(objects_dictionnary_array)))
+
+    excel_sheet_main.write(
+        'I4',
+        'Nombre d\'objets à l\'état In Progress : ' +
+        str(count_in_progress_objects(objects_dictionnary_array)))
+
+    excel_sheet_main.write(
+        'I6',
+        'Nombre d\'objets à l\'état Not Started : ' +
+        str(count_not_started_objects(objects_dictionnary_array)))
+
+    excel_sheet_main.write(
+        'I8',
+        'Nombre d\'objets à l\'état Not Evaluated : ' +
+        str(count_not_evaluated_objects(objects_dictionnary_array)))
+
     workbook.close()
