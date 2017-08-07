@@ -144,8 +144,8 @@ DONE_PHASE = 'Done'
 def count_done_objects(objects_dictionnary_array):
     done_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['SecurityProcessPhase'] == DONE_PHASE:
-            done_objects_count += done_objects_count
+        if iot_object['ObjectState'] == DONE_PHASE:
+            done_objects_count = done_objects_count + 1
 
     return done_objects_count
 
@@ -153,8 +153,8 @@ def count_done_objects(objects_dictionnary_array):
 def count_in_progress_objects(objects_dictionnary_array):
     in_progress_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['SecurityProcessPhase'] == IN_PROGRESS_PHASE:
-            in_progress_objects_count += in_progress_objects_count
+        if iot_object['ObjectState'] == IN_PROGRESS_PHASE:
+            in_progress_objects_count = in_progress_objects_count + 1
 
     return in_progress_objects_count
 
@@ -162,8 +162,8 @@ def count_in_progress_objects(objects_dictionnary_array):
 def count_not_started_objects(objects_dictionnary_array):
     not_started_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['SecurityProcessPhase'] == NOT_STARTED_PHASE:
-            not_started_objects_count += not_started_objects_count
+        if iot_object['ObjectState'] == NOT_STARTED_PHASE:
+            not_started_objects_count = not_started_objects_count + 1
 
     return not_started_objects_count
 
@@ -171,8 +171,8 @@ def count_not_started_objects(objects_dictionnary_array):
 def count_not_evaluated_objects(objects_dictionnary_array):
     not_evaluated_objects_count = 0
     for iot_object in objects_dictionnary_array:
-        if iot_object['SecurityProcessPhase'] == NOT_EVALUATED_PHASE:
-            not_evaluated_objects_count += not_evaluated_objects_count
+        if iot_object['ObjectState'] == NOT_EVALUATED_PHASE:
+            not_evaluated_objects_count = not_evaluated_objects_count + 1
 
     return not_evaluated_objects_count
 
