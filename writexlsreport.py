@@ -19,6 +19,7 @@ PHASES_DICT = {
     '6': '6. Delivery and Quality'
 }
 
+
 def write_line_to_report(project_name_string,
                          object_name_string,
                          security_process_phase_string,
@@ -37,6 +38,7 @@ def write_line_to_report(project_name_string,
     excel_sheet.write(row, column+4, person_in_charge)
     excel_sheet.write(row, column+5, result_string)
     excel_sheet.write(row, column+6, go_no_go_string)
+
 
 def write_header_to_sheet(excel_sheet):
     """Write the header row to a specific Excel Sheet in an Excel file"""
@@ -77,36 +79,41 @@ def write_object_status_to_report(object_dictionnary,
                          row,
                          column)
 
+
 def write_excel_file_from(file_name, objects_dictionnary_array):
     """Write an Excel file (xls) from a array of IoT  Dictionnary objects"""
 
-    #Create the Excel File and the Sheets inside.
+    # Create the Excel File and the Sheets inside.
     book = xlwt.Workbook(encoding="utf-8")
     excel_sheet_main = book.add_sheet("Suivi Global")
     excel_sheet_suivi_evaluation = book.add_sheet("Evaluation")
     excel_sheet_suivi_qualification = book.add_sheet("Qualification")
     excel_sheet_suivi_delivery = book.add_sheet("Delivery Request")
 
-    #Write Headers for every sheets in Excel file.
+    # Write Headers for every sheets in Excel file.
     write_header_to_sheet(excel_sheet_main)
     write_header_to_sheet(excel_sheet_suivi_evaluation)
     write_header_to_sheet(excel_sheet_suivi_qualification)
     write_header_to_sheet(excel_sheet_suivi_delivery)
 
-    #Rows for each sheet starts at 1 as row 0 is for the header.
+    # Rows for each sheet starts at 1 as row 0 is for the header.
     main_sheet_row = 1
     evaluation_sheet_row = 1
     qualification_sheet_row = 1
     delivery_sheet_row = 1
-    #Column starts as 0, as the table starts from the left.
+    # Column starts as 0, as the table starts from the left.
     column = 0
 
-    #Write Content
+    # Write Content
     for object_dictionnary in objects_dictionnary_array:
-        write_object_status_to_report(object_dictionnary, excel_sheet_main, main_sheet_row, column)
+        # Write the Object to the main sheet.
+        write_object_status_to_report(object_dictionnary,
+                                      excel_sheet_main,
+                                      main_sheet_row,
+                                      column)
 
         if object_dictionnary['SecurityProcessPhase'] == PHASES_DICT['1']:
-        #Write the Object to the "Evaluation des Risques" sheet.
+            # Write the Object to the "Evaluation des Risques" sheet.
             write_object_status_to_report(object_dictionnary,
                                           excel_sheet_suivi_evaluation,
                                           evaluation_sheet_row,
@@ -114,7 +121,7 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
             evaluation_sheet_row = evaluation_sheet_row + 1
 
         elif object_dictionnary['SecurityProcessPhase'] == PHASES_DICT['2']:
-        #Write the Object to the "HLRA - Risk Assessments" sheet.
+            # Write the Object to the "HLRA - Risk Assessments" sheet.
             write_object_status_to_report(object_dictionnary,
                                           excel_sheet_suivi_qualification,
                                           qualification_sheet_row,
@@ -122,7 +129,7 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
             qualification_sheet_row = qualification_sheet_row + 1
 
         elif object_dictionnary['SecurityProcessPhase'] == PHASES_DICT['3']:
-        #Write the Object to the "Audits de Securite" sheet.
+            # Write the Object to the "Audits de Securite" sheet.
             write_object_status_to_report(object_dictionnary,
                                           excel_sheet_suivi_delivery,
                                           delivery_sheet_row, column)
