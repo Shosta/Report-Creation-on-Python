@@ -22,6 +22,35 @@ PHASES_DICT = {
 }
 
 
+def count_objects(objects_dictionnary_array):
+    ''' Return the number of objects that are in the 'Done',
+    'In Progress', 'Not Started' and 'Not Evaluated' security phase.
+
+    Params:
+    objects_dictionnary_array: an Array of Dictionary that describes all the IoT objects.
+
+    Return:
+    A Dictionnary that describes the number of objects that are in the 'Done',
+    'In Progress', 'Not Started' and 'Not Evaluated' security phase.'''
+    objects_count_dictionnary = {
+        variables.NOT_EVALUATED_PHASE: 0,
+        variables.NOT_STARTED_PHASE: 0,
+        variables.IN_PROGRESS_PHASE: 0,
+        variables.DONE_PHASE: 0
+    }
+    for iot_object in objects_dictionnary_array:
+        if iot_object['ObjectState'] == variables.DONE_PHASE:
+            objects_count_dictionnary[variables.DONE_PHASE] = objects_count_dictionnary[variables.DONE_PHASE] + 1
+        elif iot_object['ObjectState'] == variables.IN_PROGRESS_PHASE:
+            objects_count_dictionnary[variables.IN_PROGRESS_PHASE] = objects_count_dictionnary[variables.IN_PROGRESS_PHASE] + 1
+        elif iot_object['ObjectState'] == variables.NOT_STARTED_PHASE:
+            objects_count_dictionnary[variables.NOT_STARTED_PHASE] = objects_count_dictionnary[variables.NOT_STARTED_PHASE] + 1
+        elif iot_object['ObjectState'] == variables.NOT_EVALUATED_PHASE:
+            objects_count_dictionnary[variables.NOT_EVALUATED_PHASE] = objects_count_dictionnary[variables.NOT_EVALUATED_PHASE] + 1
+
+    return objects_count_dictionnary
+
+
 def write_bold_line_to_report(project_name_string,
                               object_name_string,
                               security_process_phase_string,
@@ -123,7 +152,6 @@ def write_object_status_to_report(object_dictionnary,
     .PersonInCharge
     .Result
     .GoNoGo"""
-
     write_line_to_report(object_dictionnary['ProjectName'],
                          object_dictionnary['ObjectName'],
                          object_dictionnary['SecurityProcessPhase'],
@@ -136,72 +164,70 @@ def write_object_status_to_report(object_dictionnary,
                          row)
 
 
-def count_done_objects(objects_dictionnary_array):
-    ''' Return the number of objects that are in the 'Done' security phase.
+def write_security_manager_information(excel_sheet, excel_workbook):
+    '''
+    Write the Security Manager information to the Excel file on the right on the Objects table.
 
     Params:
-    objects_dictionnary_array: an Array of Dictionary that describes the IoT object.
+    excel_sheet: The Excel sheet where we are going to write the Security Manager information.
+    excel_workbook: The Workbook from the Excel sheet.
+    '''
+    # Define the format for the Excel workbook.
+    underline = excel_workbook.add_format({'underline': 1, 'font_color': 'black', 'border': 1})
+    bold = excel_workbook.add_format({'bold': True, 'font_color': 'black', 'border': 1})
 
-    Return:
-    The number of objects that are in the 'Done' security phase.'''
-    done_objects_count = 0
-    for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == variables.DONE_PHASE:
-            done_objects_count = done_objects_count + 1
-
-    return done_objects_count
-
-
-def count_in_progress_objects(objects_dictionnary_array):
-    ''' Return the number of objects that are in the 'In Progress' security phase.
-
-    Params:
-    objects_dictionnary_array: an Array of Dictionary that describes the IoT object.
-
-    Return:
-    The number of objects that are in the 'In Progress' security phase.'''
-    in_progress_objects_count = 0
-    for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == variables.IN_PROGRESS_PHASE:
-            in_progress_objects_count = in_progress_objects_count + 1
-
-    return in_progress_objects_count
+    # Write the Security Manager information to the Excel file on the right on the Objects table.
+    excel_sheet.write_rich_string(
+        'I1',
+        bold, 'Security Manager:',
+        underline, ' '  + variables.SECURITY_MANAGER_NAME)
+    excel_sheet.write('J1', variables.SECURITY_MANAGER_EMAIL)
+    excel_sheet.write('J2', variables.SECURITY_MANAGER_PHONE)
 
 
-def count_not_started_objects(objects_dictionnary_array):
-    ''' Return the number of objects that are in the 'Not Started' security phase.
+def write_object_counter_to_report(excel_sheet, excel_workbook, objects_dictionnary_array):
+    '''Write the number of objects that fulfill the security phases.'''
+    # Define the format for the Excel workbook.
+    underline = excel_workbook.add_format({'underline': 1, 'font_color': 'black', 'border': 1})
+    bold = excel_workbook.add_format({'bold': True, 'font_color': 'black', 'border': 1})
 
-    Params:
-    objects_dictionnary_array: an Array of Dictionary that describes the IoT object.
+    objects_counter_dictionnary = count_objects(objects_dictionnary_array)
 
-    Return:
-    The number of objects that are in the 'Not Started' security phase.'''
-    not_started_objects_count = 0
-    for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == variables.NOT_STARTED_PHASE:
-            not_started_objects_count = not_started_objects_count + 1
+    # Write the counters in the Excel file.
+    excel_sheet.write_rich_string(
+        'I4',
+        underline, 'Nombre d\'objets à l\'état \'Done\':',
+        bold, ' ' + str(objects_counter_dictionnary[variables.DONE_PHASE]))
 
-    return not_started_objects_count
+    excel_sheet.write_rich_string(
+        'I6',
+        underline, 'Nombre d\'objets à l\'état \'In Progress\':',
+        bold, ' ' + str(objects_counter_dictionnary[variables.IN_PROGRESS_PHASE]))
 
+    excel_sheet.write_rich_string(
+        'I8',
+        underline, 'Nombre d\'objets à l\'état \'Not Started\':',
+        bold, ' ' + str(objects_counter_dictionnary[variables.NOT_STARTED_PHASE]))
 
-def count_not_evaluated_objects(objects_dictionnary_array):
-    ''' Return the number of objects that are in the 'Not Evaluated' security phase.
-
-    Params:
-    objects_dictionnary_array: an Array of Dictionary that describes the IoT object.
-
-    Return:
-    The number of objects that are in the 'Not Evaluated' security phase.'''
-    not_evaluated_objects_count = 0
-    for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == variables.NOT_EVALUATED_PHASE:
-            not_evaluated_objects_count = not_evaluated_objects_count + 1
-
-    return not_evaluated_objects_count
+    excel_sheet.write_rich_string(
+        'I10',
+        underline, 'Nombre d\'objets à l\'état \'Not Evaluated\':',
+        bold, ' ' + str(objects_counter_dictionnary[variables.NOT_EVALUATED_PHASE]))
 
 
 def write_excel_file_from(file_name, objects_dictionnary_array):
-    """Write an Excel file (xlsx) from an array of IoT  Dictionnary objects"""
+    """Write an Excel file (xlsx) from an array of IoT  Dictionnary objects.
+    It is going to write 4 sheets.
+
+    1. The first sheet describes all the objects.\n
+    2. The second sheet decribes the objects that are currently in Evaluation.\n
+    3. The third sheet decribes the objects that are currently in Qualification.\n
+    4. The fourth sheet decribes the objects that are currently Audited.
+
+    Params:
+    file_name: The Excel file name
+    objects_dictionnary_array: The Array that has all the Objects Dictionnary
+    """
 
     # Create a workbook and add the worksheets.
     workbook = xlsxwriter.Workbook(file_name)
@@ -259,28 +285,10 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
                                           delivery_sheet_row)
             delivery_sheet_row = delivery_sheet_row + 1
 
+    # Write the Security Manager information to the Excel file on the right on the Objects table.
+    write_security_manager_information(excel_sheet_main, workbook)
+
     # Write the number of objects that fulfill the security phases.
-    underline = workbook.add_format({'underline': 1, 'font_color': 'black', 'border': 1})
-    bold = workbook.add_format({'bold': True, 'font_color': 'grey', 'border': 1})
-
-    excel_sheet_main.write_rich_string(
-        'I2',
-        underline, 'Nombre d\'objets à l\'état \'Done\':',
-        bold, ' ' + str(count_done_objects(objects_dictionnary_array)))
-
-    excel_sheet_main.write_rich_string(
-        'I4',
-        underline, 'Nombre d\'objets à l\'état \'In Progress\':',
-        bold, ' ' + str(count_in_progress_objects(objects_dictionnary_array)))
-
-    excel_sheet_main.write_rich_string(
-        'I6',
-        underline, 'Nombre d\'objets à l\'état \'Not Started\':',
-        bold, ' ' + str(count_not_started_objects(objects_dictionnary_array)))
-
-    excel_sheet_main.write_rich_string(
-        'I8',
-        underline, 'Nombre d\'objets à l\'état \'Not Evaluated\':',
-        bold, ' ' + str(count_not_evaluated_objects(objects_dictionnary_array)))
+    write_object_counter_to_report(excel_sheet_main, workbook, objects_dictionnary_array)
 
     workbook.close()
