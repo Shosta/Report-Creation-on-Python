@@ -259,10 +259,18 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
                                           delivery_sheet_row)
             delivery_sheet_row = delivery_sheet_row + 1
 
-    # Write the number of objects that fulfill the security phases.
     underline = workbook.add_format({'underline': 1, 'font_color': 'black', 'border': 1})
-    bold = workbook.add_format({'bold': True, 'font_color': 'grey', 'border': 1})
+    bold = workbook.add_format({'bold': True, 'font_color': 'black', 'border': 1})
 
+    # Write the Security Manager information to the Excel file on the right on the Objects table.
+    excel_sheet_main.write_rich_string(
+        'I1',
+        bold, 'Security Manager:',
+        underline, ' '  + variables.SECURITY_MANAGER_NAME)
+    excel_sheet_main.write('J1', variables.SECURITY_MANAGER_EMAIL)
+    excel_sheet_main.write('J2', variables.SECURITY_MANAGER_PHONE)
+
+    # Write the number of objects that fulfill the security phases.
     excel_sheet_main.write_rich_string(
         'I4',
         underline, 'Nombre d\'objets à l\'état \'Done\':',
