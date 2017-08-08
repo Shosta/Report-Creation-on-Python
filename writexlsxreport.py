@@ -259,28 +259,24 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
                                           delivery_sheet_row)
             delivery_sheet_row = delivery_sheet_row + 1
 
-    # Write the number of objects that fulfill the security phases.
-    underline = workbook.add_format({'underline': 1, 'font_color': 'black', 'border': 1})
-    bold = workbook.add_format({'bold': True, 'font_color': 'grey', 'border': 1})
-
-    excel_sheet_main.write_rich_string(
+    excel_sheet_main.write(
         'I2',
-        underline, 'Nombre d\'objets à l\'état \'Done\':',
-        bold, ' ' + str(count_done_objects(objects_dictionnary_array)))
+        'Nombre d\'objets à l\'état Done : ' +
+        str(count_done_objects(objects_dictionnary_array)))
 
-    excel_sheet_main.write_rich_string(
+    excel_sheet_main.write(
         'I4',
-        underline, 'Nombre d\'objets à l\'état \'In Progress\':',
-        bold, ' ' + str(count_in_progress_objects(objects_dictionnary_array)))
+        'Nombre d\'objets à l\'état In Progress : ' +
+        str(count_in_progress_objects(objects_dictionnary_array)))
 
-    excel_sheet_main.write_rich_string(
+    excel_sheet_main.write(
         'I6',
-        underline, 'Nombre d\'objets à l\'état \'Not Started\':',
-        bold, ' ' + str(count_not_started_objects(objects_dictionnary_array)))
+        'Nombre d\'objets à l\'état Not Started : ' +
+        str(count_not_started_objects(objects_dictionnary_array)))
 
-    excel_sheet_main.write_rich_string(
+    excel_sheet_main.write(
         'I8',
-        underline, 'Nombre d\'objets à l\'état \'Not Evaluated\':',
-        bold, ' ' + str(count_not_evaluated_objects(objects_dictionnary_array)))
+        'Nombre d\'objets à l\'état Not Evaluated : ' +
+        str(count_not_evaluated_objects(objects_dictionnary_array)))
 
     workbook.close()
