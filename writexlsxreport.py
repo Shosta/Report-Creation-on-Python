@@ -264,22 +264,22 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
     bold = workbook.add_format({'bold': True, 'font_color': 'grey', 'border': 1})
 
     excel_sheet_main.write_rich_string(
-        'I2',
+        'I4',
         underline, 'Nombre d\'objets à l\'état \'Done\':',
         bold, ' ' + str(count_done_objects(objects_dictionnary_array)))
 
     excel_sheet_main.write_rich_string(
-        'I4',
+        'I6',
         underline, 'Nombre d\'objets à l\'état \'In Progress\':',
         bold, ' ' + str(count_in_progress_objects(objects_dictionnary_array)))
 
     excel_sheet_main.write_rich_string(
-        'I6',
+        'I8',
         underline, 'Nombre d\'objets à l\'état \'Not Started\':',
         bold, ' ' + str(count_not_started_objects(objects_dictionnary_array)))
 
     excel_sheet_main.write_rich_string(
-        'I8',
+        'I10',
         underline, 'Nombre d\'objets à l\'état \'Not Evaluated\':',
         bold, ' ' + str(count_not_evaluated_objects(objects_dictionnary_array)))
 
