@@ -13,6 +13,8 @@ The easiest way to do this is to use the *pip* installer.
 
 To develop this program, I use [Visual Studio Code](https://code.visualstudio.com/) with the [Python](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python) extension.
 
+![Visual Studio Code and Python Extension](./ReadmeImages/VisualStudioAndPythonExtension.png)
+
 Then you only need to run the *writereport.py* module.
 
 `py ./writereport.py`
