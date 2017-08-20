@@ -1,0 +1,29 @@
+<data>
+    <SecurityReport date="">
+        <SecurityPhases>
+            <EvaluationObjects counter=""></EvaluationObjects>
+            <QualificationObjects counter=""></QualificationObjects>
+            <SecurityAuditObjects counter=""></SecurityAuditObjects>
+            <TestingObjects counter=""></TestingObjects>
+            <InLifeObjects counter=""></InLifeObjects>
+        </SecurityPhases>
+        <ObjectsPhases>
+            <InProgressObjects counter=""></InProgressObjects>
+            <DoneObjects counter=""></DoneObjects>
+            <NotStartedObjects counter=""></NotStartedObjects>
+            <NotEvaluatedObjects counter=""></NotEvaluatedObjects>
+        </ObjectsPhases>
+        <Risks>
+            <HighRisks counter=""></HighRisks>
+            <LightRisks counter=""></LightRisks>
+        </Risks>
+        <Highlights>
+            <MonthlyHighlights>
+            </MonthlyHighlights>
+            <HighlightedRisks>
+            </HighlightedRisks>
+            <ProblemsIdentified>
+            </ProblemsIdentified>
+        </Highlights>
+    </SecurityReport>
+</data>

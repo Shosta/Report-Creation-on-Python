@@ -1,3 +1,11 @@
+\.vscode/launch\.json
+
+Rapport de Suivi de Sécurité des Objets Connectés\.xlsx
+
+Dashboard de Suivi de Sécurité des Objets Connectés\.pptx
+
+*.xlsx
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

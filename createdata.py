@@ -1,5 +1,5 @@
 """
-Populate an Array of Dictionnary Objects that describe IoT objects
+Populate an Array of ObjectInfo that describe IoT objects
  and their current status
 in terms of security process.\n
 
@@ -14,6 +14,7 @@ A Dictionnary has the following key :\n
 
 import os.path
 import variables
+from report_creation_utils import xml_utils
 
 PHASES_DICT = {
     '1': '1. Evaluation des Risques',
@@ -26,14 +27,13 @@ PHASES_DICT = {
 
 
 SEPARATOR = ' - '
-CURRENT_DIR = '..\\.'
 
 NOT_STARTED_PROJECTS_COUNTER = 0
 IN_PROGRESS_PROJECTS_COUNTER = 0
 DONE_PROJECTS_COUNTER = 0
 
 
-def substring_from(string, index):
+def __substring_from(string, index):
     """Retrieve the string from a larger string splitted regarding the separator
     and returning the indexed one.
     """
@@ -44,27 +44,37 @@ def substring_from(string, index):
         substring = liste[index]
     except IndexError:
         if index-1 >= 0:
-            substring = substring_from(string, index-1)
+            substring = __substring_from(string, index-1)
 
     return substring
 
 
-def phase_name_from(directory_path):
+def get_deliveryprocess_name(directory_path):
     """Get the available phases names from the directory tree."""
 
     phase_name = ''
     try:
-        phase_name = substring_from(directory_path, 1)
+        phase_name = __substring_from(directory_path, 1)
     except IndexError:
         pass
+    
+    if phase_name == PHASES_DICT['1']:
+        return variables.EVALUATION_PHASE
+    elif phase_name == PHASES_DICT['2']:
+        return variables.QUALIFICATION_PHASE
+    elif phase_name == PHASES_DICT['3']:
+        return variables.SECURITY_AUDIT_PHASE
+    elif phase_name == PHASES_DICT['4']:
+        return variables.SECURITY_AUDIT_PHASE
+    
     return phase_name
 
 
-def get_project_name_from(directory_name):
+def get_project_name(directory_name):
     """Get the project name from the directory name.\n
 
     As the directory name is commonly name as following :
-    'Phase State - Project Name - Object Name'
+    'Delivery process state - Project Name - Object Name'
     We split the directory name with the separator ' - ' and get the second
     part to retrieve the project name."""
 
@@ -77,7 +87,7 @@ def get_project_name_from(directory_name):
     return project_name
 
 
-def get_object_name_from(directory_name):
+def get_object_name(directory_name):
     """Get the object name from the directory name.\n
 
     As the directory name is commonly name as following :
@@ -94,50 +104,54 @@ def get_object_name_from(directory_name):
     return object_name
 
 
-def get_xml_data(xml_file, element_tag_name):
-    '''Return the first data of the 'element_tag_name' type item in the
-    'xml_file'.'''
-
-    from xml.dom import minidom
-    xmldoc = minidom.parse(xml_file)
-    element = xmldoc.getElementsByTagName(element_tag_name)
-
-    first_data = ''
-    try:
-        first_data = list(element)[0].firstChild.data
-    except:
-        pass
-
-    return first_data
-
-
 def get_person_in_charge(xml_file):
     '''Return the data in the 'personInCharge' item in the xml file'''
 
-    return get_xml_data(xml_file, 'personInCharge')
+    return xml_utils.get_element_value(xml_file, 'personInCharge')
 
 
 def get_result(xml_file):
     '''Return the data in the 'result' item in the xml file'''
 
-    return get_xml_data(xml_file, 'result')
+    return xml_utils.get_element_value(xml_file, 'result')
 
 
 def get_go_no_go_result(xml_file):
     '''Return the data in the 'goNoGo' item in the xml file'''
 
-    return get_xml_data(xml_file, 'goNoGo')
+    return xml_utils.get_element_value(xml_file, 'goNoGo')
 
 
-def get_object_from(directory_path, directory_name, object_state):
-    '''Return the Object dictionnary from a 'directory_path',
+def is_b2c_object(xml_file):
+    '''Return a boolean that indicates if the object is considered as a B2C one.'''
+    return xml_utils.get_attribute_value(xml_file, 'type', 'B2C') == 'true'
+
+
+def is_b2b_object(xml_file):
+    '''Return a boolean that indicates if the object is considered as a B2C one.'''
+    return xml_utils.get_attribute_value(xml_file, 'type', 'B2B') == 'true'
+
+
+def create_object_info(directory_path, directory_name, object_state):
+    '''
+    Return the Object dictionnary from a 'directory_path',
     a 'directory_name'
-    and an Object State.'''
-    current_phase = phase_name_from(directory_path)
+    and an Object State.
 
+    Params :
+    directory_path,
+    directory_name,
+    object_state,
+
+    Return :
+    An ObjectInfo with all its members populated with the appropriate data from the parameters.
+    '''
+    current_phase = get_deliveryprocess_name(directory_path)
     person_in_charge = ''
-    go_no_go_result = ''
     result = ''
+    has_go_from_stakeholders = False
+    is_b2b = False
+    is_b2c = False
 
     from os import listdir
     from os.path import isfile, join
@@ -147,60 +161,71 @@ def get_object_from(directory_path, directory_name, object_state):
             xml_file = join(directory_path, directory_name, cur_file)
             person_in_charge = get_person_in_charge(xml_file)
             result = get_result(xml_file)
-            go_no_go_result = get_go_no_go_result(xml_file)
 
-    object_iot_dictionnary = {
-        'SecurityProcessPhase': current_phase,
-        'ProjectName': get_project_name_from(directory_name),
-        'ObjectName': get_object_name_from(directory_name),
-        'ObjectState': object_state,
-        'PersonInCharge': person_in_charge,
-        'Result': result,
-        'GoNoGo': go_no_go_result
-        }
+            # Get booleans.
+            has_go_from_stakeholders = (get_go_no_go_result(xml_file) == 'Go')
+            is_b2b = is_b2b_object(xml_file)
+            is_b2c = is_b2c_object(xml_file)
 
-    return object_iot_dictionnary
+    from IoTProjectInfo import ObjectInfo
+    object_info = ObjectInfo()
+
+    object_info.project_name = get_project_name(directory_name)
+    object_info.object_name = get_object_name(directory_name)
+    object_info.is_b2c = is_b2c
+    object_info.is_b2b = is_b2b
+
+    object_info.security_phase_progress = object_state
+    object_info.delivery_security_process_phase = current_phase
 
 
-def populate_projects_array():
-    """Populate an array with Dictionnaries objects describing
-    the IoT objects from the directory tree"""
-    objects_dictionnary_array = []
+    object_info.person_in_charge = person_in_charge
+    object_info.has_go_from_stakeholders = has_go_from_stakeholders
+    object_info.result = result
 
-    # for dirpath, dirnames in os.walk(CURRENT_DIR):
-    for dirpath, dirnames, files in os.walk(CURRENT_DIR):
+    return object_info
+
+
+def populate_objects_array():
+    '''
+    Populate an array with 'ObjectInfo' objects describing the IoT objects from the directory tree.
+    '''
+    iot_objects_array = []
+
+    # for dirpath, dirnames in os.walk(variables.CURRENT_DIR):
+    for dirpath, dirnames, files in os.walk(variables.CURRENT_DIR):
 
         for dirname in dirnames:
             # Add all "Not Evaluated" Objects to the result Array
             if dirname.lower().startswith(variables.NOT_EVALUATED_PHASE.lower()):
-                object_iot_dictionnary = get_object_from(
+                iot_object = create_object_info(
                     dirpath,
                     dirname,
                     variables.NOT_EVALUATED_PHASE)
-                objects_dictionnary_array.append(object_iot_dictionnary)
+                iot_objects_array.append(iot_object)
 
             # Add all "Not Started" Objects to the result Array
             if dirname.lower().startswith(variables.NOT_STARTED_PHASE.lower()):
-                object_iot_dictionnary = get_object_from(
+                iot_object = create_object_info(
                     dirpath,
                     dirname,
                     variables.NOT_STARTED_PHASE)
-                objects_dictionnary_array.append(object_iot_dictionnary)
+                iot_objects_array.append(iot_object)
 
             # Add all "In Progress" Objects to the result Array
             if dirname.lower().startswith(variables.IN_PROGRESS_PHASE.lower()):
-                object_iot_dictionnary = get_object_from(
+                iot_object = create_object_info(
                     dirpath,
                     dirname,
                     variables.IN_PROGRESS_PHASE)
-                objects_dictionnary_array.append(object_iot_dictionnary)
+                iot_objects_array.append(iot_object)
 
             # Add all "Done" Objects to the result Array
             if dirname.lower().startswith(variables.DONE_PHASE.lower()):
-                object_iot_dictionnary = get_object_from(
+                iot_object = create_object_info(
                     dirpath,
                     dirname,
                     variables.DONE_PHASE)
-                objects_dictionnary_array.append(object_iot_dictionnary)
+                iot_objects_array.append(iot_object)
 
-    return objects_dictionnary_array
+    return iot_objects_array

@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Write the eIoT report in an Xlsx file.\n
 
@@ -13,16 +14,48 @@ import xlsxwriter
 import variables
 
 PHASES_DICT = {
-    'RiskEvaluationKey': '1. Evaluation des Risques',
-    'RiskAssessmentKey': '2. HLRA - Risk Assessments',
-    'SecurityAuditKey': '3. Audits de Securite',
-    'ManualTestKey': '4. Tests Manuels',
+    'RiskEvaluationKey': variables.EVALUATION_PHASE,
+    'RiskAssessmentKey': variables.QUALIFICATION_PHASE,
+    'SecurityAuditKey': variables.SECURITY_AUDIT_PHASE,
+    'ManualTestKey': variables.TESTING_PHASE,
     'LegalKey': '5. Legal and Contracts',
-    'DeliveryAndQualityKey': '6. Delivery and Quality'
+    'DeliveryAndQualityKey': variables.IN_LIFE_PHASE
 }
 
 
-def count_objects(objects_dictionnary_array):
+def security_phase_objects_counter(iot_objects_array):
+    ''' Return the number of objects that are in the 'Evaluation', 'Qualification', 'Testing',
+    'Security Audit' and 'In Life' phase.
+
+    Params:
+    objects_dictionnary_array: an Array of Dictionary that describes all the IoT objects.
+
+    Return:
+    A Dictionnary that describes the number of objects that are in the 'Evaluation',
+    'Qualification', 'Testing', 'Security Audit' and 'In Life' phase.'''
+    security_phase_objects_count_dictionnary = {
+        variables.EVALUATION_PHASE: 0,
+        variables.QUALIFICATION_PHASE: 0,
+        variables.TESTING_PHASE: 0,
+        variables.SECURITY_AUDIT_PHASE: 0,
+        variables.IN_LIFE_PHASE: 0
+    }
+    for iot_object in iot_objects_array:
+        if iot_object.delivery_security_process_phase == PHASES_DICT['RiskEvaluationKey']:
+            security_phase_objects_count_dictionnary[variables.EVALUATION_PHASE] = security_phase_objects_count_dictionnary[variables.EVALUATION_PHASE] + 1
+        elif iot_object.delivery_security_process_phase == PHASES_DICT['RiskAssessmentKey']:
+            security_phase_objects_count_dictionnary[variables.QUALIFICATION_PHASE] = security_phase_objects_count_dictionnary[variables.QUALIFICATION_PHASE] + 1
+        elif iot_object.delivery_security_process_phase == PHASES_DICT['SecurityAuditKey']:
+            security_phase_objects_count_dictionnary[variables.SECURITY_AUDIT_PHASE] = security_phase_objects_count_dictionnary[variables.SECURITY_AUDIT_PHASE] + 1
+        elif iot_object.delivery_security_process_phase == PHASES_DICT['ManualTestKey']:
+            security_phase_objects_count_dictionnary[variables.TESTING_PHASE] = security_phase_objects_count_dictionnary[variables.TESTING_PHASE] + 1
+        elif iot_object.delivery_security_process_phase == PHASES_DICT['DeliveryAndQualityKey']:
+            security_phase_objects_count_dictionnary[variables.IN_LIFE_PHASE] = security_phase_objects_count_dictionnary[variables.IN_LIFE_PHASE] + 1
+        
+    return security_phase_objects_count_dictionnary
+
+
+def objects_phase_counter(iot_objects_array):
     ''' Return the number of objects that are in the 'Done',
     'In Progress', 'Not Started' and 'Not Evaluated' security phase.
 
@@ -38,14 +71,14 @@ def count_objects(objects_dictionnary_array):
         variables.IN_PROGRESS_PHASE: 0,
         variables.DONE_PHASE: 0
     }
-    for iot_object in objects_dictionnary_array:
-        if iot_object['ObjectState'] == variables.DONE_PHASE:
+    for iot_object in iot_objects_array:
+        if iot_object.security_phase_progress == variables.DONE_PHASE:
             objects_count_dictionnary[variables.DONE_PHASE] = objects_count_dictionnary[variables.DONE_PHASE] + 1
-        elif iot_object['ObjectState'] == variables.IN_PROGRESS_PHASE:
+        elif iot_object.security_phase_progress == variables.IN_PROGRESS_PHASE:
             objects_count_dictionnary[variables.IN_PROGRESS_PHASE] = objects_count_dictionnary[variables.IN_PROGRESS_PHASE] + 1
-        elif iot_object['ObjectState'] == variables.NOT_STARTED_PHASE:
+        elif iot_object.security_phase_progress == variables.NOT_STARTED_PHASE:
             objects_count_dictionnary[variables.NOT_STARTED_PHASE] = objects_count_dictionnary[variables.NOT_STARTED_PHASE] + 1
-        elif iot_object['ObjectState'] == variables.NOT_EVALUATED_PHASE:
+        elif iot_object.security_phase_progress == variables.NOT_EVALUATED_PHASE:
             objects_count_dictionnary[variables.NOT_EVALUATED_PHASE] = objects_count_dictionnary[variables.NOT_EVALUATED_PHASE] + 1
 
     return objects_count_dictionnary
@@ -79,7 +112,7 @@ def write_line_to_report(project_name_string,
                          object_state_string,
                          person_in_charge,
                          result_string,
-                         go_no_go_string,
+                         has_go_from_stakeholders,
                          excel_workbook,
                          excel_sheet,
                          row):
@@ -115,12 +148,10 @@ def write_line_to_report(project_name_string,
         excel_sheet.write(row, column+5, result_string, green_bold)
 
     # Add format to the Go/No Go State row => Red, Amber, Green.
-    if go_no_go_string == 'Go':
-        excel_sheet.write(row, column+6, go_no_go_string, green_bold)
-    elif go_no_go_string == 'No Go':
-        excel_sheet.write(row, column+6, go_no_go_string, red_bold)
+    if has_go_from_stakeholders:
+        excel_sheet.write(row, column+6, 'Go', green_bold)
     else:
-        excel_sheet.write(row, column+6, '', border)
+        excel_sheet.write(row, column+6, 'No Go', red_bold)
 
 
 def write_header_to_sheet(excel_workbook, excel_sheet):
@@ -139,7 +170,7 @@ def write_header_to_sheet(excel_workbook, excel_sheet):
                               header_format)
 
 
-def write_object_status_to_report(object_dictionnary,
+def write_object_status_to_report(iot_object_info,
                                   excel_workbook,
                                   excel_sheet,
                                   row):
@@ -152,13 +183,13 @@ def write_object_status_to_report(object_dictionnary,
     .PersonInCharge
     .Result
     .GoNoGo"""
-    write_line_to_report(object_dictionnary['ProjectName'],
-                         object_dictionnary['ObjectName'],
-                         object_dictionnary['SecurityProcessPhase'],
-                         object_dictionnary['ObjectState'],
-                         object_dictionnary['PersonInCharge'],
-                         object_dictionnary['Result'],
-                         object_dictionnary['GoNoGo'],
+    write_line_to_report(iot_object_info.project_name,
+                         iot_object_info.object_name,
+                         iot_object_info.delivery_security_process_phase,
+                         iot_object_info.security_phase_progress,
+                         iot_object_info.person_in_charge,
+                         iot_object_info.result,
+                         iot_object_info.has_go_from_stakeholders,
                          excel_workbook,
                          excel_sheet,
                          row)
@@ -185,13 +216,13 @@ def write_security_manager_information(excel_sheet, excel_workbook):
     excel_sheet.write('J2', variables.SECURITY_MANAGER_PHONE)
 
 
-def write_object_counter_to_report(excel_sheet, excel_workbook, objects_dictionnary_array):
+def write_object_counter_to_report(excel_sheet, excel_workbook, iot_objects_array):
     '''Write the number of objects that fulfill the security phases.'''
     # Define the format for the Excel workbook.
     underline = excel_workbook.add_format({'underline': 1, 'font_color': 'black', 'border': 1})
     bold = excel_workbook.add_format({'bold': True, 'font_color': 'black', 'border': 1})
 
-    objects_counter_dictionnary = count_objects(objects_dictionnary_array)
+    objects_counter_dictionnary = objects_phase_counter(iot_objects_array)
 
     # Write the counters in the Excel file.
     excel_sheet.write_rich_string(
@@ -215,7 +246,7 @@ def write_object_counter_to_report(excel_sheet, excel_workbook, objects_dictionn
         bold, ' ' + str(objects_counter_dictionnary[variables.NOT_EVALUATED_PHASE]))
 
 
-def write_excel_file_from(file_name, objects_dictionnary_array):
+def write_excel_file_from(file_name, iot_objects_array):
     """Write an Excel file (xlsx) from an array of IoT  Dictionnary objects.
     It is going to write 4 sheets.
 
@@ -251,35 +282,35 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
     delivery_sheet_row = 1
 
     # Write Content
-    for object_dictionnary in objects_dictionnary_array:
+    for iot_object in iot_objects_array:
         # Write all objects to the Main sheet.
-        write_object_status_to_report(object_dictionnary,
+        write_object_status_to_report(iot_object,
                                       workbook,
                                       excel_sheet_main,
                                       main_sheet_row)
 
         main_sheet_row = main_sheet_row + 1
 
-        if object_dictionnary['SecurityProcessPhase'] == PHASES_DICT['RiskEvaluationKey']:
+        if iot_object.delivery_security_process_phase == PHASES_DICT['RiskEvaluationKey']:
             # Write the Object to the "Evaluation des Risques" sheet.
-            write_object_status_to_report(object_dictionnary,
+            write_object_status_to_report(iot_object,
                                           workbook,
                                           excel_sheet_suivi_evaluation,
                                           evaluation_sheet_row)
 
             evaluation_sheet_row = evaluation_sheet_row + 1
 
-        elif object_dictionnary['SecurityProcessPhase'] == PHASES_DICT['RiskAssessmentKey']:
+        elif iot_object.delivery_security_process_phase == PHASES_DICT['RiskAssessmentKey']:
             # Write the Object to the "HLRA - Risk Assessments" sheet.
-            write_object_status_to_report(object_dictionnary,
+            write_object_status_to_report(iot_object,
                                           workbook,
                                           excel_sheet_suivi_qualification,
                                           qualification_sheet_row)
             qualification_sheet_row = qualification_sheet_row + 1
 
-        elif object_dictionnary['SecurityProcessPhase'] == PHASES_DICT['SecurityAuditKey']:
+        elif iot_object.delivery_security_process_phase == PHASES_DICT['SecurityAuditKey']:
             # Write the Object to the "Audits de Securite" sheet.
-            write_object_status_to_report(object_dictionnary,
+            write_object_status_to_report(iot_object,
                                           workbook,
                                           excel_sheet_suivi_delivery,
                                           delivery_sheet_row)
@@ -289,6 +320,6 @@ def write_excel_file_from(file_name, objects_dictionnary_array):
     write_security_manager_information(excel_sheet_main, workbook)
 
     # Write the number of objects that fulfill the security phases.
-    write_object_counter_to_report(excel_sheet_main, workbook, objects_dictionnary_array)
+    write_object_counter_to_report(excel_sheet_main, workbook, iot_objects_array)
 
     workbook.close()
