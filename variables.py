@@ -4,8 +4,8 @@ Define the variables in a module.
 
 """
 
-#CURRENT_DIR = 'C:\\Remi\\Orange Pro\\Suivi de Securite des Projets OCP'
-CURRENT_DIR = '/Users/Shosta/OrangePro/Suivi de Securite des Projets OCP'
+SECURITY_PROJECTS_DIRPATH = 'C:\\Remi\\Orange Pro\\Suivi de Securite des Projets OCP'
+#SECURITY_PROJECTS_DIRPATH = '/Users/Shosta/OrangePro/Suivi de Securite des Projets OCP'
 
 TEMPLATES_FOLDER_NAME = 'Templates'
 SECURITY_REPORT_TEMPLATE_FILE_NAME = 'SecurityReportTemplate.xml'

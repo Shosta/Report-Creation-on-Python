@@ -192,8 +192,8 @@ def populate_objects_array():
     '''
     iot_objects_array = []
 
-    # for dirpath, dirnames in os.walk(variables.CURRENT_DIR):
-    for dirpath, dirnames, files in os.walk(variables.CURRENT_DIR):
+    # for dirpath, dirnames in os.walk(variables.SECURITY_PROJECTS_DIRPATH):
+    for dirpath, dirnames, files in os.walk(variables.SECURITY_PROJECTS_DIRPATH):
 
         for dirname in dirnames:
             # Add all "Not Evaluated" Objects to the result Array

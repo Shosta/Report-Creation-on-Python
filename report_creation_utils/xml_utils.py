@@ -1,8 +1,6 @@
 '''
 Xml file Helpers functions to read and write files, access elements or attributes.
 '''
-import os.path
-import variables
 
 def get_element_value(xml_file, element_tag_name):
     '''Return the value of the first element that has the 'element_tag_name' type item in the
