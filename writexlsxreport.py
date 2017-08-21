@@ -246,7 +246,7 @@ def write_object_counter_to_report(excel_sheet, excel_workbook, iot_objects_arra
         bold, ' ' + str(objects_counter_dictionnary[variables.NOT_EVALUATED_PHASE]))
 
 
-def write_excel_file_from(file_name, iot_objects_array):
+def write_excel_file_from(security_projects_folder, file_name, iot_objects_array):
     """Write an Excel file (xlsx) from an array of IoT  Dictionnary objects.
     It is going to write 4 sheets.
 
@@ -264,7 +264,7 @@ def write_excel_file_from(file_name, iot_objects_array):
     from datetime import datetime
     now = datetime.now()
     import os.path
-    xls_abs_path = os.path.join(variables.CURRENT_DIR,
+    xls_abs_path = os.path.join(security_projects_folder,
                                 variables.HISTORY_FOLDER_NAME,
                                 str(now.year) + "-" + str(now.month)+ " - " + file_name)
     workbook = xlsxwriter.Workbook(xls_abs_path)

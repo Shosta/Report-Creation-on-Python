@@ -354,7 +354,7 @@ class SecurityReport:
 
         #Highlights
         from report_creation_utils import xml_utils
-        highlights_file_path = os.path.join(variables.CURRENT_DIR, variables.HISTORY_FOLDER_NAME, variables.HIGHLIGHTS_FILE_NAME)
+        highlights_file_path = os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, variables.HIGHLIGHTS_FILE_NAME)
         monthly_highlights = xml_utils.get_element_value(highlights_file_path, 'MonthlyHighlights')
         highlighted_risks = xml_utils.get_element_value(highlights_file_path, 'HighlightedRisks')
         problems_identified = xml_utils.get_element_value(highlights_file_path, 'ProblemsIdentified')
@@ -367,7 +367,7 @@ class SecurityReport:
         # Open the SecurityReport Templates
         from xml.dom import minidom
         import variables
-        path = os.path.join('.',  variables.TEMPLATES_FOLDER_NAME, variables.SECURITY_REPORT_TEMPLATE_FILE_NAME)
+        path = os.path.join(os.path.dirname(__file__),  variables.TEMPLATES_FOLDER_NAME, variables.SECURITY_REPORT_TEMPLATE_FILE_NAME)
         xml_dom = minidom.parse(path)
 
         from report_creation_utils import xml_utils
@@ -402,7 +402,7 @@ class SecurityReport:
         # Encode the str result to bytes in order to write it to a file.
         result = xml_dom.toxml().encode('utf-8')
         # Save the Security Report in a file.
-        security_report_path = os.path.join(variables.CURRENT_DIR,  variables.HISTORY_FOLDER_NAME, str(self.report_date) + variables.SECURITY_REPORT_FILE_NAME)
+        security_report_path = os.path.join(variables.SECURITY_PROJECTS_DIRPATH,  variables.HISTORY_FOLDER_NAME, str(self.report_date) + variables.SECURITY_REPORT_FILE_NAME)
         file_handle = open(security_report_path, "wb")
         file_handle.write(result)
         file_handle.close()
