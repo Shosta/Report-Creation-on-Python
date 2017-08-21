@@ -8,7 +8,6 @@ from pptx.chart.data import ChartData
 from pptx.enum.chart import XL_CHART_TYPE
 from pptx.util import Cm
 import variables
-import SecurityReport
 
 def __get_preceding_securityprogress_counters():
     '''
@@ -278,4 +277,10 @@ def write_dashboard_file(ppt_file_name, security_report):
     __write_dashboard_slide(prs, security_report)
     __write_highlights_slide(prs, security_report)
 
-    prs.save(ppt_file_name)
+    from datetime import datetime
+    now = datetime.now()
+    import os.path
+    ppt_abs_path = os.path.join(variables.CURRENT_DIR,
+                                variables.HISTORY_FOLDER_NAME,
+                                str(now.year) + "-" + str(now.month)+ " - " + ppt_file_name)
+    prs.save(ppt_abs_path)

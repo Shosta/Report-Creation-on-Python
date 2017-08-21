@@ -261,7 +261,13 @@ def write_excel_file_from(file_name, iot_objects_array):
     """
 
     # Create a workbook and add the worksheets.
-    workbook = xlsxwriter.Workbook(file_name)
+    from datetime import datetime
+    now = datetime.now()
+    import os.path
+    xls_abs_path = os.path.join(variables.CURRENT_DIR,
+                                variables.HISTORY_FOLDER_NAME,
+                                str(now.year) + "-" + str(now.month)+ " - " + file_name)
+    workbook = xlsxwriter.Workbook(xls_abs_path)
 
     # Add the worksheets to the workbook.
     excel_sheet_main = workbook.add_worksheet("Suivi Global")
