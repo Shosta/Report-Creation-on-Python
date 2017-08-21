@@ -36,18 +36,19 @@ def __get_security_projects_folder(argv):
     # Add default value.
     security_projects_folder = variables.SECURITY_PROJECTS_DIRPATH
     try:
-        opts, args = getopt.getopt(argv, "h:s:", ["help=", "security_projects_folder="])
+        opts, args = getopt.getopt(argv, "hs:", ["help=", "security_projects_folder="])
     except getopt.GetoptError:
         print('Type \'writereport.py -h\' for help.')
         sys.exit(2)
 
     if opts.__len__() == 0:
         usage()
+        #raise Exception('Usage displayed, stop application')
 
     for opt, arg in opts:
-        if opt == '-h':
+        if opt in ("-h", "--help"):
             usage()
-            sys.exit()
+            #raise Exception('Usage displayed, stop application')
         elif opt in ("-s", "--security_projects_folder"):
             security_projects_folder = arg
             variables.SECURITY_PROJECTS_DIRPATH = arg
@@ -58,7 +59,11 @@ def __get_security_projects_folder(argv):
 def main(argv):
     """The main function that is launched when the program is started."""
     # Get folder argument from the command.
-    security_projects_folder = __get_security_projects_folder(argv)
+    try:
+        security_projects_folder = __get_security_projects_folder(argv)
+    except Exception:
+        sys.exit()
+        print('exit')
 
     # Populate the IoTObjects list with the info from the Security Projects folder.
     iot_objects_array = createdata.populate_objects_array()
@@ -73,9 +78,6 @@ def main(argv):
         'Rapport de Suivi de Sécurité des Objets Connectés.xlsx',
         iot_objects_array)
 
-    # Create the Security dashboard.
-    security_report = SecurityReport.SecurityReport()
-    security_report.populate_member_values(iot_objects_array)
     writepptreport.write_dashboard_file(
         security_projects_folder,
         'Dashboard de Suivi de Sécurité des Objets Connectés.pptx',
@@ -84,7 +86,8 @@ def main(argv):
     # Save the current SecurityReport to an xml file.
     security_report.save_to_file()
 
+    print("Reports writing done")
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-    print("Reports writing done")

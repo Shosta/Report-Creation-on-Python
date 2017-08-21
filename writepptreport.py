@@ -30,8 +30,8 @@ def __get_preceding_securityprogress_counters():
     
     import os.path
     from report_creation_utils import xml_utils
-    if os.path.isfile(os.path.join(variables.CURRENT_DIR, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)):
-        last_month_security_report_path = os.path.join(variables.CURRENT_DIR, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)
+    if os.path.isfile(os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)):
+        last_month_security_report_path = os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)
         
         are_notstarted_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'NotStartedObjects', 'counter')
         are_inprogresss_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'InProgressObjects', 'counter')
@@ -82,8 +82,8 @@ def __get_preceding_deliveryprocess_counters():
     
     import os.path
     from report_creation_utils import xml_utils
-    if os.path.isfile(os.path.join(variables.CURRENT_DIR, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)):
-        last_month_security_report_path = os.path.join(variables.CURRENT_DIR, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)
+    if os.path.isfile(os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)):
+        last_month_security_report_path = os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)
         
         evaluation_objects_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'EvaluationObjects', 'counter')
         qualification_objects_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'QualificationObjects', 'counter')
@@ -188,8 +188,8 @@ def __get_preceding_risks_counters():
     
     import os.path
     from report_creation_utils import xml_utils
-    if os.path.isfile(os.path.join(variables.CURRENT_DIR, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)):
-        last_month_security_report_path = os.path.join(variables.CURRENT_DIR, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)
+    if os.path.isfile(os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)):
+        last_month_security_report_path = os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)
         
         high_risks_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'HighRisks', 'counter')
         light_risks_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'LightRisks', 'counter')
@@ -270,17 +270,21 @@ def __write_highlights_slide(presentation, security_report):
                     shape.text = security_report.highlights.problems_identified
 
 
-def write_dashboard_file(ppt_file_name, security_report):
+def write_dashboard_file(security_projects_folder, ppt_file_name, security_report):
 
+    import os.path
+    path = os.path.join(os.path.dirname(__file__),  variables.TEMPLATES_FOLDER_NAME, 'SecurityReport.pptx')
+    
     # Open the default Powerpoint file we are going to use to write the Report.
-    prs = Presentation('./Templates/SecurityReport.pptx')
+    prs = Presentation(path)
     __write_dashboard_slide(prs, security_report)
     __write_highlights_slide(prs, security_report)
 
     from datetime import datetime
     now = datetime.now()
-    import os.path
-    ppt_abs_path = os.path.join(variables.CURRENT_DIR,
+    ppt_abs_path = os.path.join(security_projects_folder,
                                 variables.HISTORY_FOLDER_NAME,
                                 str(now.year) + "-" + str(now.month)+ " - " + ppt_file_name)
     prs.save(ppt_abs_path)
+
+    

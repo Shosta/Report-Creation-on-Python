@@ -44,3 +44,11 @@ The directory of project and object must be described as followed :
 Then you only need to run the *writereport.py* module in your terminal.
 
 `py ./writereport.py`
+
+### 5. Explanation about creating command alias on Windows, MacOS and Linux
+
+For Windows :
+https://technet.microsoft.com/en-us/library/ee176913.aspx
+
+change the Execution policy if you don't have any rights to launch powershell profiles :
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&viewFallbackFrom=powershell-Microsoft.PowerShell.Core
