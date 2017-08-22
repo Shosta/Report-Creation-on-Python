@@ -50,23 +50,41 @@ class Risks:
     def __init__(self):
         # print('Risks')
         self._high_risks = 0
+        self._moderate_risks = 0
         self._light_risks = 0
+        self._riskiestobjects_list = []
 
     @property
     def high_risks(self):
         return self._high_risks
 
     @property
+    def moderate_risks(self):
+        return self._moderate_risks
+
+    @property
     def light_risks(self):
         return self._light_risks
+
+    @property
+    def riskiestobjects_list(self):
+        return self._riskiestobjects_list
 
     @high_risks.setter
     def high_risks(self, value):
         self._high_risks = value
 
+    @moderate_risks.setter
+    def moderate_risks(self, value):
+        self._moderate_risks = value
+
     @light_risks.setter
     def light_risks(self, value):
         self._light_risks = value
+
+    @riskiestobjects_list.setter
+    def riskiestobjects_list(self, value):
+        self._riskiestobjects_list = value
 
 class SecurityPhaseProgress:
     '''
