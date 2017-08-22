@@ -128,11 +128,9 @@ def __add_data_label_on_chart_columns(chart):
     data_labels.position = XL_LABEL_POSITION.INSIDE_END
 
 
-def __add_legend_to_chart(chart):
-    from pptx.enum.chart import XL_LEGEND_POSITION
-
+def __add_legend_to_chart(chart, position):
     chart.has_legend = True
-    chart.legend.position = XL_LEGEND_POSITION.RIGHT
+    chart.legend.position = position
     chart.legend.include_in_layout = False
 
 
@@ -150,7 +148,8 @@ def __write_securityprogress_chart(slide, security_report):
     __add_data_label_on_chart_columns(chart)
 
     # Add legend to chart
-    __add_legend_to_chart(chart)
+    from pptx.enum.chart import XL_LEGEND_POSITION
+    __add_legend_to_chart(chart, XL_LEGEND_POSITION.RIGHT)
 
 
 def __write_deliveryprocess_chart(slide, security_report):
@@ -167,7 +166,34 @@ def __write_deliveryprocess_chart(slide, security_report):
     __add_data_label_on_chart_columns(chart)
 
     # Add legend to chart
-    __add_legend_to_chart(chart)
+    from pptx.enum.chart import XL_LEGEND_POSITION
+    __add_legend_to_chart(chart, XL_LEGEND_POSITION.RIGHT)
+
+
+def __draw_riskiest_objects_linechart(slide):
+    '''
+    It draws an horizontal line charts to the Dashboard slide.
+    The chart describes the top 5 objects that have the highest number of risks.
+    '''
+    chart_data = ChartData()
+    # obj1, obj2, obj3, obj4, obj5
+    
+    chart_data.categories = ['obj1', 'obj2', 'obj3', 'obj4', 'obj5']
+    chart_data.add_series('High Risks', (7, 5, 4, 3, 1))
+    chart_data.add_series('Light Risks', (2, 1, 3, 6, 2))
+    
+     # add chart to slide --------------------
+    x, y, cx, cy = Cm(9), Cm(11.5), Cm(16.5), Cm(7)
+    chart = slide.shapes.add_chart(
+        XL_CHART_TYPE.BAR_STACKED, x, y, cx, cy, chart_data
+    ).chart
+
+    __add_data_label_on_chart_columns
+
+    # Add legend to chart
+    from pptx.enum.chart import XL_LEGEND_POSITION
+    __add_legend_to_chart(chart, XL_LEGEND_POSITION.BOTTOM)
+    
 
 def __get_preceding_risks_counters():
     '''
@@ -242,7 +268,8 @@ def __write_dashboard_slide(presentation, security_report):
 
     # Write Chart on slide
     __write_deliveryprocess_chart(slide, security_report)
-    __write_securityprogress_chart(slide, security_report)
+    #__write_securityprogress_chart(slide, security_report)
+    __draw_riskiest_objects_linechart(slide)
 
 
 def __write_highlights_slide(presentation, security_report):
