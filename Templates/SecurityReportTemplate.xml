@@ -15,6 +15,7 @@
         </ObjectsPhases>
         <Risks>
             <HighRisks counter=""></HighRisks>
+            <ModerateRisks counter=""></ModerateRisks>
             <LightRisks counter=""></LightRisks>
         </Risks>
         <Highlights>
