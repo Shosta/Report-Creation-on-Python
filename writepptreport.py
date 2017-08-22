@@ -128,6 +128,7 @@ def __add_data_label_on_chart_columns(chart):
     data_labels.position = XL_LABEL_POSITION.INSIDE_END
 
 
+
 def __add_legend_to_chart(chart, position):
     chart.has_legend = True
     chart.legend.position = position
@@ -170,17 +171,39 @@ def __write_deliveryprocess_chart(slide, security_report):
     __add_legend_to_chart(chart, XL_LEGEND_POSITION.RIGHT)
 
 
-def __draw_riskiest_objects_linechart(slide):
+def __draw_riskiest_objects_linechart(slide, security_report):
     '''
     It draws an horizontal line charts to the Dashboard slide.
     The chart describes the top 5 objects that have the highest number of risks.
     '''
+    riskiestobjects_list = security_report.risks.riskiestobjects_list
+    length = len(riskiestobjects_list)
+
     chart_data = ChartData()
-    # obj1, obj2, obj3, obj4, obj5
-    
-    chart_data.categories = ['obj1', 'obj2', 'obj3', 'obj4', 'obj5']
-    chart_data.add_series('High Risks', (7, 5, 4, 3, 1))
-    chart_data.add_series('Light Risks', (2, 1, 3, 6, 2))
+    chart_data.categories = [riskiestobjects_list[length-1].object_name,
+                             riskiestobjects_list[length-2].object_name,
+                             riskiestobjects_list[length-3].object_name,
+                             riskiestobjects_list[length-4].object_name,
+                             riskiestobjects_list[length-5].object_name]
+
+    chart_data.add_series('High Risks', (
+        riskiestobjects_list[length-1].high_risks_counter,
+        riskiestobjects_list[length-2].high_risks_counter,
+        riskiestobjects_list[length-3].high_risks_counter,
+        riskiestobjects_list[length-4].high_risks_counter,
+        riskiestobjects_list[length-5].high_risks_counter))
+    chart_data.add_series('Moderate Risks', (
+        riskiestobjects_list[length-1].moderate_risks_counter,
+        riskiestobjects_list[length-2].moderate_risks_counter,
+        riskiestobjects_list[length-3].moderate_risks_counter,
+        riskiestobjects_list[length-4].moderate_risks_counter,
+        riskiestobjects_list[length-5].moderate_risks_counter))
+    chart_data.add_series('Light Risks', (
+        riskiestobjects_list[length-1].light_risks_counter,
+        riskiestobjects_list[length-2].light_risks_counter,
+        riskiestobjects_list[length-3].light_risks_counter,
+        riskiestobjects_list[length-4].light_risks_counter,
+        riskiestobjects_list[length-5].light_risks_counter))
     
      # add chart to slide --------------------
     x, y, cx, cy = Cm(9), Cm(11.5), Cm(16.5), Cm(7)
@@ -188,7 +211,7 @@ def __draw_riskiest_objects_linechart(slide):
         XL_CHART_TYPE.BAR_STACKED, x, y, cx, cy, chart_data
     ).chart
 
-    __add_data_label_on_chart_columns
+    __add_data_label_on_chart_columns(chart)
 
     # Add legend to chart
     from pptx.enum.chart import XL_LEGEND_POSITION
@@ -269,7 +292,7 @@ def __write_dashboard_slide(presentation, security_report):
     # Write Chart on slide
     __write_deliveryprocess_chart(slide, security_report)
     #__write_securityprogress_chart(slide, security_report)
-    __draw_riskiest_objects_linechart(slide)
+    __draw_riskiest_objects_linechart(slide, security_report)
 
 
 def __write_highlights_slide(presentation, security_report):
