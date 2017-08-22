@@ -128,11 +128,10 @@ def __add_data_label_on_chart_columns(chart):
     data_labels.position = XL_LABEL_POSITION.INSIDE_END
 
 
-def __add_legend_to_chart(chart):
-    from pptx.enum.chart import XL_LEGEND_POSITION
 
+def __add_legend_to_chart(chart, position):
     chart.has_legend = True
-    chart.legend.position = XL_LEGEND_POSITION.RIGHT
+    chart.legend.position = position
     chart.legend.include_in_layout = False
 
 
@@ -150,7 +149,8 @@ def __write_securityprogress_chart(slide, security_report):
     __add_data_label_on_chart_columns(chart)
 
     # Add legend to chart
-    __add_legend_to_chart(chart)
+    from pptx.enum.chart import XL_LEGEND_POSITION
+    __add_legend_to_chart(chart, XL_LEGEND_POSITION.RIGHT)
 
 
 def __write_deliveryprocess_chart(slide, security_report):
@@ -167,7 +167,56 @@ def __write_deliveryprocess_chart(slide, security_report):
     __add_data_label_on_chart_columns(chart)
 
     # Add legend to chart
-    __add_legend_to_chart(chart)
+    from pptx.enum.chart import XL_LEGEND_POSITION
+    __add_legend_to_chart(chart, XL_LEGEND_POSITION.RIGHT)
+
+
+def __draw_riskiest_objects_linechart(slide, security_report):
+    '''
+    It draws an horizontal line charts to the Dashboard slide.
+    The chart describes the top 5 objects that have the highest number of risks.
+    '''
+    riskiestobjects_list = security_report.risks.riskiestobjects_list
+    length = len(riskiestobjects_list)
+
+    chart_data = ChartData()
+    chart_data.categories = [riskiestobjects_list[length-1].object_name,
+                             riskiestobjects_list[length-2].object_name,
+                             riskiestobjects_list[length-3].object_name,
+                             riskiestobjects_list[length-4].object_name,
+                             riskiestobjects_list[length-5].object_name]
+
+    chart_data.add_series('High Risks', (
+        riskiestobjects_list[length-1].high_risks_counter,
+        riskiestobjects_list[length-2].high_risks_counter,
+        riskiestobjects_list[length-3].high_risks_counter,
+        riskiestobjects_list[length-4].high_risks_counter,
+        riskiestobjects_list[length-5].high_risks_counter))
+    chart_data.add_series('Moderate Risks', (
+        riskiestobjects_list[length-1].moderate_risks_counter,
+        riskiestobjects_list[length-2].moderate_risks_counter,
+        riskiestobjects_list[length-3].moderate_risks_counter,
+        riskiestobjects_list[length-4].moderate_risks_counter,
+        riskiestobjects_list[length-5].moderate_risks_counter))
+    chart_data.add_series('Light Risks', (
+        riskiestobjects_list[length-1].light_risks_counter,
+        riskiestobjects_list[length-2].light_risks_counter,
+        riskiestobjects_list[length-3].light_risks_counter,
+        riskiestobjects_list[length-4].light_risks_counter,
+        riskiestobjects_list[length-5].light_risks_counter))
+    
+     # add chart to slide --------------------
+    x, y, cx, cy = Cm(9), Cm(11.5), Cm(16.5), Cm(7)
+    chart = slide.shapes.add_chart(
+        XL_CHART_TYPE.BAR_STACKED, x, y, cx, cy, chart_data
+    ).chart
+
+    __add_data_label_on_chart_columns(chart)
+
+    # Add legend to chart
+    from pptx.enum.chart import XL_LEGEND_POSITION
+    __add_legend_to_chart(chart, XL_LEGEND_POSITION.BOTTOM)
+    
 
 def __get_preceding_risks_counters():
     '''
@@ -178,6 +227,7 @@ def __get_preceding_risks_counters():
     Return:
     A Tuple that has the Delivery Security process counters in the following order, 
     High risks,
+    Moderate risks,
     Light risks
     '''
     from datetime import datetime
@@ -192,12 +242,14 @@ def __get_preceding_risks_counters():
         last_month_security_report_path = os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)
         
         high_risks_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'HighRisks', 'counter')
+        moderate_risks_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'ModerateRisks', 'counter')
         light_risks_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'LightRisks', 'counter')
         
         return [high_risks_counter,
+                moderate_risks_counter,
                 light_risks_counter]
 
-    return [0, 0]
+    return [0, 0, 0]
 
 
 def __write_dashboard_slide(presentation, security_report):
@@ -220,17 +272,25 @@ def __write_dashboard_slide(presentation, security_report):
                 if shape.placeholder_format.idx == 10:
                     shape.text = str(security_report.risks.high_risks)
 
-                # High Risks since last month
+                # High Risks last month
                 if shape.placeholder_format.idx == 11:
                     shape.text = str(last_month_risks[0])
 
-                # Light Risks this month
-                if shape.placeholder_format.idx == 12:
+                # Moderate Risks this month
+                if shape.placeholder_format.idx == 18:
+                    shape.text = str(security_report.risks.moderate_risks)
+
+                # Moderate Risks last month
+                if shape.placeholder_format.idx == 19:
                     shape.text = str(last_month_risks[1])
 
-                # Light Risks since last month
-                if shape.placeholder_format.idx == 13:
+                # Light Risks this month
+                if shape.placeholder_format.idx == 12:
                     shape.text = str(security_report.risks.light_risks)
+
+                # Light Risks last month
+                if shape.placeholder_format.idx == 13:
+                    shape.text = str(last_month_risks[1])
 
                 # Total B2B Objects
                 if shape.placeholder_format.idx == 14:
@@ -242,7 +302,8 @@ def __write_dashboard_slide(presentation, security_report):
 
     # Write Chart on slide
     __write_deliveryprocess_chart(slide, security_report)
-    __write_securityprogress_chart(slide, security_report)
+    #__write_securityprogress_chart(slide, security_report)
+    __draw_riskiest_objects_linechart(slide, security_report)
 
 
 def __write_highlights_slide(presentation, security_report):
