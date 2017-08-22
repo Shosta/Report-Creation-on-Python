@@ -227,6 +227,7 @@ def __get_preceding_risks_counters():
     Return:
     A Tuple that has the Delivery Security process counters in the following order, 
     High risks,
+    Moderate risks,
     Light risks
     '''
     from datetime import datetime
@@ -241,12 +242,14 @@ def __get_preceding_risks_counters():
         last_month_security_report_path = os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, preceding_report_file_name)
         
         high_risks_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'HighRisks', 'counter')
+        moderate_risks_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'ModerateRisks', 'counter')
         light_risks_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'LightRisks', 'counter')
         
         return [high_risks_counter,
+                moderate_risks_counter,
                 light_risks_counter]
 
-    return [0, 0]
+    return [0, 0, 0]
 
 
 def __write_dashboard_slide(presentation, security_report):

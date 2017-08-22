@@ -389,6 +389,7 @@ class SecurityReport:
 
         #Highlights
         from report_creation_utils import xml_utils
+        import variables
         highlights_file_path = os.path.join(variables.SECURITY_PROJECTS_DIRPATH, variables.HISTORY_FOLDER_NAME, variables.HIGHLIGHTS_FILE_NAME)
         monthly_highlights = xml_utils.get_element_value(highlights_file_path, 'MonthlyHighlights')
         highlighted_risks = xml_utils.get_element_value(highlights_file_path, 'HighlightedRisks')
