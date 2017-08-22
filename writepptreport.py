@@ -272,17 +272,25 @@ def __write_dashboard_slide(presentation, security_report):
                 if shape.placeholder_format.idx == 10:
                     shape.text = str(security_report.risks.high_risks)
 
-                # High Risks since last month
+                # High Risks last month
                 if shape.placeholder_format.idx == 11:
                     shape.text = str(last_month_risks[0])
 
-                # Light Risks this month
-                if shape.placeholder_format.idx == 12:
+                # Moderate Risks this month
+                if shape.placeholder_format.idx == 18:
+                    shape.text = str(security_report.risks.moderate_risks)
+
+                # Moderate Risks last month
+                if shape.placeholder_format.idx == 19:
                     shape.text = str(last_month_risks[1])
 
-                # Light Risks since last month
-                if shape.placeholder_format.idx == 13:
+                # Light Risks this month
+                if shape.placeholder_format.idx == 12:
                     shape.text = str(security_report.risks.light_risks)
+
+                # Light Risks last month
+                if shape.placeholder_format.idx == 13:
+                    shape.text = str(last_month_risks[1])
 
                 # Total B2B Objects
                 if shape.placeholder_format.idx == 14:
