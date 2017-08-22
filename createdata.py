@@ -132,6 +132,18 @@ def is_b2b_object(xml_file):
     return xml_utils.get_attribute_value(xml_file, 'type', 'B2B') == 'true'
 
 
+def __get_high_risks_counter(xml_file):
+    return xml_utils.get_attribute_value(xml_file, 'Risks', 'highRiskCounter')
+
+
+def __get_moderate_risks_counter(xml_file):
+    return xml_utils.get_attribute_value(xml_file, 'Risks', 'moderateRiskCounter')
+
+
+def __get_light_risks_counter(xml_file):
+    return xml_utils.get_attribute_value(xml_file, 'Risks', 'lightRiskCounter')
+
+
 def create_object_info(directory_path, directory_name, object_state):
     '''
     Return the Object dictionnary from a 'directory_path',
@@ -153,6 +165,10 @@ def create_object_info(directory_path, directory_name, object_state):
     is_b2b = False
     is_b2c = False
 
+    high_risks_counter = 0
+    moderate_risks_counter = 0
+    light_risks_counter = 0
+
     from os import listdir
     from os.path import isfile, join
     onlyfiles = [f for f in listdir(os.path.join(directory_path, directory_name)) if isfile(join(os.path.join(directory_path, directory_name), f))]
@@ -166,6 +182,12 @@ def create_object_info(directory_path, directory_name, object_state):
             has_go_from_stakeholders = (get_go_no_go_result(xml_file) == 'Go')
             is_b2b = is_b2b_object(xml_file)
             is_b2c = is_b2c_object(xml_file)
+
+            # Get Risks counters
+            high_risks_counter = __get_high_risks_counter(xml_file)
+            moderate_risks_counter = __get_moderate_risks_counter(xml_file)
+            light_risks_counter = __get_light_risks_counter(xml_file)
+
 
     from IoTProjectInfo import ObjectInfo
     object_info = ObjectInfo()
@@ -182,6 +204,10 @@ def create_object_info(directory_path, directory_name, object_state):
     object_info.person_in_charge = person_in_charge
     object_info.has_go_from_stakeholders = has_go_from_stakeholders
     object_info.result = result
+
+    object_info.high_risks_counter = high_risks_counter
+    object_info.moderate_risks_counter = moderate_risks_counter
+    object_info.light_risks_counter = light_risks_counter
 
     return object_info
 
