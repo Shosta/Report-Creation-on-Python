@@ -19,7 +19,7 @@ NOT_STARTED_PHASE = 'Not Started'
 IN_PROGRESS_PHASE = 'In Progress'
 DONE_PHASE = 'Done'
 SEPARATOR = ' - '
-CURRENT_DIR = '.'
+SECURITY_PROJECTS_DIRPATH = '.'
 
 NOT_STARTED_PROJECTS_COUNTER = 0
 IN_PROGRESS_PROJECTS_COUNTER = 0
@@ -197,8 +197,8 @@ def populate_projects_array():
     the IoT objects from the directory tree"""
     objects_dictionnary_array = []
 
-    #for dirpath, dirnames in os.walk(CURRENT_DIR):
-    for dirpath, dirnames, files in os.walk(CURRENT_DIR):
+    #for dirpath, dirnames in os.walk(SECURITY_PROJECTS_DIRPATH):
+    for dirpath, dirnames, files in os.walk(SECURITY_PROJECTS_DIRPATH):
 
         #Add all "Not Started" Objects to the result Array
         for dirname in dirnames:
