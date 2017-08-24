@@ -19,6 +19,9 @@ class ObjectInfo:
         self._person_in_charge = ""
         self._has_go_from_stakeholders = False
         self._result = ""
+        self._high_risks_counter = 0
+        self._moderate_risks_counter = 0
+        self._light_risks_counter = 0
 
     @property
     def project_name(self):
@@ -58,6 +61,18 @@ class ObjectInfo:
     def result(self):
         return self._result
 
+    @property
+    def high_risks_counter(self):
+        return self._high_risks_counter
+
+    @property
+    def moderate_risks_counter(self):
+        return self._moderate_risks_counter
+
+    @property
+    def light_risks_counter(self):
+        return self._light_risks_counter
+
     @project_name.setter
     def project_name(self, value):
         self._project_name = value
@@ -95,3 +110,15 @@ class ObjectInfo:
     @result.setter
     def result(self, string):
         self._result = string
+
+    @high_risks_counter.setter
+    def high_risks_counter(self, value):
+        self._high_risks_counter = int(value)
+
+    @moderate_risks_counter.setter
+    def moderate_risks_counter(self, value):
+        self._moderate_risks_counter = int(value)
+
+    @light_risks_counter.setter
+    def light_risks_counter(self, value):
+        self._light_risks_counter = int(value)

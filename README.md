@@ -43,7 +43,7 @@ The directory of project and object must be described as followed :
 
 Then you only need to run the *writereport.py* module in your terminal.
 
-`py ./writereport.py`
+>`py ./writereport.py`
 
 ### 5. Explanation about creating command alias on Windows, MacOS and Linux
 
@@ -52,3 +52,17 @@ https://technet.microsoft.com/en-us/library/ee176913.aspx
 
 change the Execution policy if you don't have any rights to launch powershell profiles :
 https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&viewFallbackFrom=powershell-Microsoft.PowerShell.Core
+
+For MacOS :
+Create the .bash_profile file using the command line program called ‘nano’ if it doesn’t exist:
+>`nano ~/.bash_profile`
+
+Add this line the end of your file: 
+>`alias writereport='python3 /path/to/writereport.py'`
+
+Save your file
+>ctrl-x y
+
+Refresh the bash shell environment:
+>`source ~/.bash_profile`
+
