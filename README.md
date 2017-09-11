@@ -5,14 +5,15 @@ Generate my Security Report with a Python module.
 To make this module works properly, you need to install several external modules.
 
 You need :
+* [Python 3.x](https://www.python.org/)
 * [xlxswriter](https://xlsxwriter.readthedocs.io/index.html)
-* [xlwt](https://pypi.python.org/pypi/xlwt)
 * [python-pptx](https://python-pptx.readthedocs.io/en/latest/#)
+
+Install Python 3 on your operating system following the [Python website's instructions](https://wiki.python.org/moin/BeginnersGuide/Download).
 
 The easiest way to do this is to use the *pip* installer.
 ```python
 pip install xlsxwriter
-pip install xlwt
 pip install python-pptx
 ```
 
@@ -24,6 +25,8 @@ To develop this program, I use [Visual Studio Code](https://code.visualstudio.co
 ### 2. Installation
 
 Download the zip file from Github or clone the repository.
+
+As Python is an interpreted language, you just need the source files to make it work.
 
 ### 3. Set up your directories
 
@@ -43,17 +46,22 @@ The directory of project and object must be described as followed :
 
 Then you only need to run the *writereport.py* module in your terminal.
 
->`py ./writereport.py`
+>`py /path/to/writereport.py`
+
+Your Excel and Powerpoint reports are located into the 'ReportHistory' folder.
 
 ### 5. Explanation about creating command alias on Windows, MacOS and Linux
 
+To launch the reports creation in a easier and quicker, you can use alias on macOS and Linux or Powershell Alias on Windows.
+
+See the explanations above.
 For Windows :
 https://technet.microsoft.com/en-us/library/ee176913.aspx
 
 change the Execution policy if you don't have any rights to launch powershell profiles :
 https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&viewFallbackFrom=powershell-Microsoft.PowerShell.Core
 
-For MacOS :
+For MacOS and Linux :
 Create the .bash_profile file using the command line program called ‘nano’ if it doesn’t exist:
 >`nano ~/.bash_profile`
 
@@ -65,4 +73,8 @@ Save your file
 
 Refresh the bash shell environment:
 >`source ~/.bash_profile`
+
+Launch the command:
+>`writereport -h`
+
 
