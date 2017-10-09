@@ -43,11 +43,13 @@ def __get_security_projects_folder(argv):
 
     if opts.__len__() == 0:
         usage()
+        sys.exit(2)
         #raise Exception('Usage displayed, stop application')
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             usage()
+            sys.exit(2)
             #raise Exception('Usage displayed, stop application')
         elif opt in ("-s", "--security_projects_folder"):
             security_projects_folder = arg
