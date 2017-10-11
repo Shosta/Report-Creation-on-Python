@@ -21,6 +21,8 @@ To develop this program, I use [Visual Studio Code](https://code.visualstudio.co
 
 ![Visual Studio Code and Python Extension](./ReadmeImages/VisualStudioAndPythonExtension.png)
 
+Be sure to change your Python interpreter to Python3 as this program was developed for Python3.
+In Visual Studio Code, you can do this very easily following the instructions [here](https://github.com/DonJayamanne/pythonVSCode/wiki/Miscellaneous#select-an-interpreter).
 
 ### 2. Installation
 
