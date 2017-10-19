@@ -66,3 +66,5 @@ Save your file
 Refresh the bash shell environment:
 >`source ~/.bash_profile`
 
+:books: Doc : Add explanation on how to create an alias on macOS
+In order for the user to have a shortcut to the app and don't require to enter the all path the 'writereport.py' python file.
