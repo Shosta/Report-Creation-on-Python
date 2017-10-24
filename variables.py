@@ -4,8 +4,9 @@ Define the variables in a module.
 
 """
 
-SECURITY_PROJECTS_DIRPATH = 'C:\\Remi\\Orange Pro\\Suivi de Securite des Projets OCP'
-#SECURITY_PROJECTS_DIRPATH = '/Users/Shosta/OrangePro/Suivi de Securite des Projets OCP'
+#SECURITY_PROJECTS_DIRPATH = 'C:\\Remi\\Orange Pro\\Suivi de Securite des Projets OCP' #MacOS
+#SECURITY_PROJECTS_DIRPATH = '/Users/Shosta/OrangePro/Suivi de Securite des Projets OCP' #Windows
+SECURITY_PROJECTS_DIRPATH = '/home/shostarsson/Orange Pro/Suivi de Securite des Projets OCP' #Linux
 
 TEMPLATES_FOLDER_NAME = 'Templates'
 SECURITY_REPORT_TEMPLATE_FILE_NAME = 'SecurityReportTemplate.xml'

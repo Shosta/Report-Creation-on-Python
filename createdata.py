@@ -212,14 +212,14 @@ def create_object_info(directory_path, directory_name, object_state):
     return object_info
 
 
-def populate_objects_array():
+def populate_objects_array(security_projects_folder):
     '''
     Populate an array with 'ObjectInfo' objects describing the IoT objects from the directory tree.
     '''
     iot_objects_array = []
 
     # for dirpath, dirnames in os.walk(variables.SECURITY_PROJECTS_DIRPATH):
-    for dirpath, dirnames, files in os.walk(variables.SECURITY_PROJECTS_DIRPATH):
+    for dirpath, dirnames, files in os.walk(security_projects_folder):
 
         for dirname in dirnames:
             # Add all "Not Evaluated" Objects to the result Array
