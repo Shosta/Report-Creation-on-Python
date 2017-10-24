@@ -41,7 +41,7 @@ def __get_security_projects_folder(argv):
         print('Type \'writereport.py -h\' for help.')
         sys.exit(2)
 
-    if opts.__len__() == 0:
+    if len(opts) == 0:
         usage()
         raise Exception('Usage displayed, stop application')
 
