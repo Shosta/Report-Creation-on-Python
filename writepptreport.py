@@ -180,30 +180,45 @@ def __draw_riskiest_objects_linechart(slide, security_report):
     length = len(riskiestobjects_list)
 
     chart_data = ChartData()
-    chart_data.categories = [riskiestobjects_list[length-1].object_name,
-                             riskiestobjects_list[length-2].object_name,
-                             riskiestobjects_list[length-3].object_name,
-                             riskiestobjects_list[length-4].object_name,
-                             riskiestobjects_list[length-5].object_name]
+    highrisks_chartserie = []
+    moderaterisks_chartserie = []
+    lightrisks_chartserie = []
 
-    chart_data.add_series('High Risks', (
-        riskiestobjects_list[length-1].high_risks_counter,
-        riskiestobjects_list[length-2].high_risks_counter,
-        riskiestobjects_list[length-3].high_risks_counter,
-        riskiestobjects_list[length-4].high_risks_counter,
-        riskiestobjects_list[length-5].high_risks_counter))
-    chart_data.add_series('Moderate Risks', (
-        riskiestobjects_list[length-1].moderate_risks_counter,
-        riskiestobjects_list[length-2].moderate_risks_counter,
-        riskiestobjects_list[length-3].moderate_risks_counter,
-        riskiestobjects_list[length-4].moderate_risks_counter,
-        riskiestobjects_list[length-5].moderate_risks_counter))
-    chart_data.add_series('Light Risks', (
-        riskiestobjects_list[length-1].light_risks_counter,
-        riskiestobjects_list[length-2].light_risks_counter,
-        riskiestobjects_list[length-3].light_risks_counter,
-        riskiestobjects_list[length-4].light_risks_counter,
-        riskiestobjects_list[length-5].light_risks_counter))
+    
+    # We have less than 5 objects so we take every objets and display it.
+    if (length < 5):
+        for iot_object in riskiestobjects_list:
+            chart_data.categories.add_category(iot_object.object_name)
+
+            highrisks_chartserie.append(iot_object.high_risks_counter)
+            moderaterisks_chartserie.append(iot_object.moderate_risks_counter)
+            lightrisks_chartserie.append(iot_object.light_risks_counter)
+    else:
+        chart_data.categories = [riskiestobjects_list[length-1].object_name,
+                                riskiestobjects_list[length-2].object_name,
+                                riskiestobjects_list[length-3].object_name,
+                                riskiestobjects_list[length-4].object_name,
+                                riskiestobjects_list[length-5].object_name]
+
+        highrisks_chartserie = [riskiestobjects_list[length-1].high_risks_counter,
+                                riskiestobjects_list[length-2].high_risks_counter,
+                                riskiestobjects_list[length-3].high_risks_counter,
+                                riskiestobjects_list[length-4].high_risks_counter,
+                                riskiestobjects_list[length-5].high_risks_counter]
+        moderaterisks_chartserie = [riskiestobjects_list[length-1].moderate_risks_counter,
+                                    riskiestobjects_list[length-2].moderate_risks_counter,
+                                    riskiestobjects_list[length-3].moderate_risks_counter,
+                                    riskiestobjects_list[length-4].moderate_risks_counter,
+                                    riskiestobjects_list[length-5].moderate_risks_counter]
+        lightrisks_chartserie = [riskiestobjects_list[length-1].light_risks_counter,
+                                 riskiestobjects_list[length-2].light_risks_counter,
+                                 riskiestobjects_list[length-3].light_risks_counter,
+                                 riskiestobjects_list[length-4].light_risks_counter,
+                                 riskiestobjects_list[length-5].light_risks_counter]
+
+    chart_data.add_series('High Risks', highrisks_chartserie)
+    chart_data.add_series('Moderate Risks', moderaterisks_chartserie)
+    chart_data.add_series('Light Risks', lightrisks_chartserie)
     
      # add chart to slide --------------------
     x, y, cx, cy = Cm(9), Cm(11.5), Cm(16.5), Cm(7)
