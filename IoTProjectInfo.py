@@ -16,6 +16,7 @@ class ObjectInfo:
         self._security_phase_progress = ""
         self._is_b2b = False
         self._is_b2c = False
+        self._is_eiot = False
         self._person_in_charge = ""
         self._has_go_from_stakeholders = False
         self._result = ""
@@ -47,6 +48,10 @@ class ObjectInfo:
     @property
     def is_b2c(self):
         return self._is_b2c
+
+    @property
+    def is_eiot(self):
+        return self._is_eiot
 
     @property
     def person_in_charge(self):
@@ -98,6 +103,10 @@ class ObjectInfo:
     @is_b2c.setter
     def is_b2c(self, boolean):
         self._is_b2c = boolean
+
+    @is_eiot.setter
+    def is_eiot(self, boolean):
+        self._is_eiot = boolean
 
     @person_in_charge.setter
     def person_in_charge(self, string):
