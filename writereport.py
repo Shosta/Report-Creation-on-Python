@@ -66,7 +66,7 @@ def main(argv):
         print('exit')
 
     # Populate the IoTObjects list with the info from the Security Projects folder.
-    iot_objects_array = createdata.populate_objects_array()
+    iot_objects_array = createdata.populate_objects_array(security_projects_folder)
 
      # Create the security report.
     security_report = SecurityReport.SecurityReport()
