@@ -91,6 +91,7 @@ def write_bold_line_to_report(project_name_string,
                               person_in_charge,
                               result_string,
                               go_no_go_string,
+                              object_type,
                               excel_sheet,
                               row,
                               cell_format):
@@ -104,6 +105,7 @@ def write_bold_line_to_report(project_name_string,
     excel_sheet.write(row, column+4, person_in_charge, cell_format)
     excel_sheet.write(row, column+5, result_string, cell_format)
     excel_sheet.write(row, column+6, go_no_go_string, cell_format)
+    excel_sheet.write(row, column+7, object_type, cell_format)
 
 
 def write_line_to_report(project_name_string,
@@ -113,6 +115,7 @@ def write_line_to_report(project_name_string,
                          person_in_charge,
                          result_string,
                          has_go_from_stakeholders,
+                         object_type,
                          excel_workbook,
                          excel_sheet,
                          row):
@@ -153,6 +156,8 @@ def write_line_to_report(project_name_string,
     else:
         excel_sheet.write(row, column+6, 'No Go', red_bold)
 
+    excel_sheet.write(row, column+7, object_type, border)
+
 
 def write_header_to_sheet(excel_workbook, excel_sheet):
     """Write the header row to a specific Excel Sheet in an Excel file"""
@@ -165,6 +170,7 @@ def write_header_to_sheet(excel_workbook, excel_sheet):
                               'Person in Charge',
                               'Result',
                               'Go/No Go',
+                              'Object Type',
                               excel_sheet,
                               0,
                               header_format)
@@ -182,7 +188,8 @@ def write_object_status_to_report(iot_object_info,
     .ObjectState
     .PersonInCharge
     .Result
-    .GoNoGo"""
+    .GoNoGo
+    .Object Type"""
     write_line_to_report(iot_object_info.project_name,
                          iot_object_info.object_name,
                          iot_object_info.delivery_security_process_phase,
@@ -190,6 +197,7 @@ def write_object_status_to_report(iot_object_info,
                          iot_object_info.person_in_charge,
                          iot_object_info.result,
                          iot_object_info.has_go_from_stakeholders,
+                         iot_object_info.object_type,
                          excel_workbook,
                          excel_sheet,
                          row)
