@@ -234,22 +234,22 @@ def write_object_counter_to_report(excel_sheet, excel_workbook, iot_objects_arra
 
     # Write the counters in the Excel file.
     excel_sheet.write_rich_string(
-        'I4',
+        'K4',
         underline, 'Nombre d\'objets à l\'état \'Done\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.DONE_PHASE]))
 
     excel_sheet.write_rich_string(
-        'I6',
         underline, 'Nombre d\'objets à l\'état \'In Progress\':',
+        'K6',
         bold, ' ' + str(objects_counter_dictionnary[variables.IN_PROGRESS_PHASE]))
 
     excel_sheet.write_rich_string(
-        'I8',
+        'K8',
         underline, 'Nombre d\'objets à l\'état \'Not Started\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.NOT_STARTED_PHASE]))
 
     excel_sheet.write_rich_string(
-        'I10',
+        'K10',
         underline, 'Nombre d\'objets à l\'état \'Not Evaluated\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.NOT_EVALUATED_PHASE]))
 
