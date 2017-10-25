@@ -19,6 +19,7 @@ class ObjectInfo:
         self._is_eiot = False
         self._person_in_charge = ""
         self._has_go_from_stakeholders = False
+        self._comment = ""
         self._result = ""
         self._high_risks_counter = 0
         self._moderate_risks_counter = 0
@@ -77,6 +78,10 @@ class ObjectInfo:
         return object_type
 
     @property
+    def comment(self):
+        return self.__comment
+
+    @property
     def result(self):
         return self._result
 
@@ -129,6 +134,10 @@ class ObjectInfo:
     @has_go_from_stakeholders.setter
     def has_go_from_stakeholders(self, boolean):
         self._has_go_from_stakeholders = boolean
+
+    @comment.setter
+    def comment(self, string):
+        self.__comment = string
 
     @result.setter
     def result(self, string):
