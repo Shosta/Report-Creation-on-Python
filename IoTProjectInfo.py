@@ -63,6 +63,20 @@ class ObjectInfo:
         return self._has_go_from_stakeholders
 
     @property
+    def object_type(self):
+        '''A string that describes if the object is a B2C, a B2B or an EIoT one.'''
+        object_type = ""
+
+        if self._is_b2b:
+            object_type = "B2B"
+        elif self._is_b2c:
+            object_type = "B2C"
+        elif self._is_eiot:
+            object_type = "eIoT"
+    
+        return object_type
+
+    @property
     def result(self):
         return self._result
 
