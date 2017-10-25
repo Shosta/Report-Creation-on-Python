@@ -13,8 +13,8 @@ Install Python 3 on your operating system following the [Python website's instru
 
 The easiest way to do this is to use the *pip* installer.
 ```python
-pip install xlsxwriter
-pip install python-pptx
+pip install xlsxwriter or python3.x -m pip install xlsxwriter
+pip install python-pptx or python3.x -m pip install python-ppx
 ```
 
 To develop this program, I use [Visual Studio Code](https://code.visualstudio.com/) with the [Python](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python) extension.
@@ -35,6 +35,11 @@ As Python is an interpreted language, you just need the source files to make it 
 1. Describe your phases as root directory.
 1. Describe the projects and objects you need to follow inside each phase directory.
 
+
+Your folder hierarchy should be as followed : 
+
+![Security Projects Folder Hierarchy](./ReadmeImages/SecurityProjectFolderHierarchy.png)
+
 The directory of project and object must be described as followed : 
  "**_Phase - Project Name - Object Name_**"
 
@@ -48,7 +53,7 @@ The directory of project and object must be described as followed :
 
 Then you only need to run the *writereport.py* module in your terminal.
 
->`py /path/to/writereport.py`
+>`py /path/to/writereport.py --help`
 
 Your Excel and Powerpoint reports are located into the 'ReportHistory' folder.
 
@@ -75,6 +80,10 @@ Save your file
 
 Refresh the bash shell environment:
 >`source ~/.bash_profile`
+
+If you use the fish shell, just type that command:
+>`alias writereport 'python3 /path/to/writereport.py'`
+
 
 :books: Doc : Add explanation on how to create an alias on macOS
 In order for the user to have a shortcut to the app and don't require to enter the all path the 'writereport.py' python file.
