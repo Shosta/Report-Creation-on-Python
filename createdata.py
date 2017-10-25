@@ -116,6 +116,12 @@ def get_result(xml_file):
     return xml_utils.get_element_value(xml_file, 'result')
 
 
+def get_comment(xml_file):
+    '''Return the data in the 'Comments' item in the xml file'''
+
+    return xml_utils.get_element_value(xml_file, 'Comments')
+
+
 def get_go_no_go_result(xml_file):
     '''Return the data in the 'goNoGo' item in the xml file'''
 
@@ -166,6 +172,7 @@ def create_object_info(directory_path, directory_name, object_state):
     current_phase = get_deliveryprocess_name(directory_path)
     person_in_charge = ''
     result = ''
+    comment = ''
     has_go_from_stakeholders = False
     is_b2b = False
     is_b2c = False
@@ -183,6 +190,8 @@ def create_object_info(directory_path, directory_name, object_state):
             xml_file = join(directory_path, directory_name, cur_file)
             person_in_charge = get_person_in_charge(xml_file)
             result = get_result(xml_file)
+            comment = get_comment(xml_file)
+
 
             # Get booleans.
             has_go_from_stakeholders = (get_go_no_go_result(xml_file) == 'Go')
@@ -212,6 +221,7 @@ def create_object_info(directory_path, directory_name, object_state):
     object_info.person_in_charge = person_in_charge
     object_info.has_go_from_stakeholders = has_go_from_stakeholders
     object_info.result = result
+    object_info.comment = comment
 
     object_info.high_risks_counter = high_risks_counter
     object_info.moderate_risks_counter = moderate_risks_counter

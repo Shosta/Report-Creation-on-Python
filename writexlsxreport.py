@@ -92,6 +92,7 @@ def write_bold_line_to_report(project_name_string,
                               result_string,
                               go_no_go_string,
                               object_type,
+                              comment,
                               excel_sheet,
                               row,
                               cell_format):
@@ -106,6 +107,7 @@ def write_bold_line_to_report(project_name_string,
     excel_sheet.write(row, column+5, result_string, cell_format)
     excel_sheet.write(row, column+6, go_no_go_string, cell_format)
     excel_sheet.write(row, column+7, object_type, cell_format)
+    excel_sheet.write(row, column+8, comment, cell_format)
 
 
 def write_line_to_report(project_name_string,
@@ -116,6 +118,7 @@ def write_line_to_report(project_name_string,
                          result_string,
                          has_go_from_stakeholders,
                          object_type,
+                         comment,
                          excel_workbook,
                          excel_sheet,
                          row):
@@ -158,6 +161,8 @@ def write_line_to_report(project_name_string,
 
     excel_sheet.write(row, column+7, object_type, border)
 
+    excel_sheet.write(row, column+8, comment, border)
+
 
 def write_header_to_sheet(excel_workbook, excel_sheet):
     """Write the header row to a specific Excel Sheet in an Excel file"""
@@ -171,6 +176,7 @@ def write_header_to_sheet(excel_workbook, excel_sheet):
                               'Result',
                               'Go/No Go',
                               'Object Type',
+                              'Comment',
                               excel_sheet,
                               0,
                               header_format)
@@ -198,6 +204,7 @@ def write_object_status_to_report(iot_object_info,
                          iot_object_info.result,
                          iot_object_info.has_go_from_stakeholders,
                          iot_object_info.object_type,
+                         iot_object_info.comment,
                          excel_workbook,
                          excel_sheet,
                          row)
@@ -217,11 +224,11 @@ def write_security_manager_information(excel_sheet, excel_workbook):
 
     # Write the Security Manager information to the Excel file on the right on the Objects table.
     excel_sheet.write_rich_string(
-        'I1',
+        'K1',
         bold, 'Security Manager:',
         underline, ' '  + variables.SECURITY_MANAGER_NAME)
-    excel_sheet.write('J1', variables.SECURITY_MANAGER_EMAIL)
-    excel_sheet.write('J2', variables.SECURITY_MANAGER_PHONE)
+    excel_sheet.write('L1', variables.SECURITY_MANAGER_EMAIL)
+    excel_sheet.write('L2', variables.SECURITY_MANAGER_PHONE)
 
 
 def write_object_counter_to_report(excel_sheet, excel_workbook, iot_objects_array):
@@ -234,22 +241,22 @@ def write_object_counter_to_report(excel_sheet, excel_workbook, iot_objects_arra
 
     # Write the counters in the Excel file.
     excel_sheet.write_rich_string(
-        'I4',
+        'K4',
         underline, 'Nombre d\'objets à l\'état \'Done\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.DONE_PHASE]))
 
     excel_sheet.write_rich_string(
-        'I6',
+        'K6',
         underline, 'Nombre d\'objets à l\'état \'In Progress\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.IN_PROGRESS_PHASE]))
 
     excel_sheet.write_rich_string(
-        'I8',
+        'K8',
         underline, 'Nombre d\'objets à l\'état \'Not Started\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.NOT_STARTED_PHASE]))
 
     excel_sheet.write_rich_string(
-        'I10',
+        'K10',
         underline, 'Nombre d\'objets à l\'état \'Not Evaluated\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.NOT_EVALUATED_PHASE]))
 
