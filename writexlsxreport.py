@@ -217,11 +217,11 @@ def write_security_manager_information(excel_sheet, excel_workbook):
 
     # Write the Security Manager information to the Excel file on the right on the Objects table.
     excel_sheet.write_rich_string(
-        'I1',
+        'K1',
         bold, 'Security Manager:',
         underline, ' '  + variables.SECURITY_MANAGER_NAME)
-    excel_sheet.write('J1', variables.SECURITY_MANAGER_EMAIL)
-    excel_sheet.write('J2', variables.SECURITY_MANAGER_PHONE)
+    excel_sheet.write('L1', variables.SECURITY_MANAGER_EMAIL)
+    excel_sheet.write('L2', variables.SECURITY_MANAGER_PHONE)
 
 
 def write_object_counter_to_report(excel_sheet, excel_workbook, iot_objects_array):
