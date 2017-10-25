@@ -128,8 +128,13 @@ def is_b2c_object(xml_file):
 
 
 def is_b2b_object(xml_file):
-    '''Return a boolean that indicates if the object is considered as a B2C one.'''
+    '''Return a boolean that indicates if the object is considered as a B2B one.'''
     return xml_utils.get_attribute_value(xml_file, 'type', 'B2B') == 'true'
+
+
+def is_eiot_object(xml_file):
+    '''Return a boolean that indicates if the object is considered as a eIoT (enterprise Internet of Things) one.'''
+    return xml_utils.get_attribute_value(xml_file, 'type', 'EIOT') == 'true'
 
 
 def __get_high_risks_counter(xml_file):
@@ -164,6 +169,7 @@ def create_object_info(directory_path, directory_name, object_state):
     has_go_from_stakeholders = False
     is_b2b = False
     is_b2c = False
+    is_eiot = False
 
     high_risks_counter = 0
     moderate_risks_counter = 0
@@ -182,6 +188,7 @@ def create_object_info(directory_path, directory_name, object_state):
             has_go_from_stakeholders = (get_go_no_go_result(xml_file) == 'Go')
             is_b2b = is_b2b_object(xml_file)
             is_b2c = is_b2c_object(xml_file)
+            is_eiot = is_eiot_object(xml_file)
 
             # Get Risks counters
             high_risks_counter = __get_high_risks_counter(xml_file)
@@ -196,6 +203,7 @@ def create_object_info(directory_path, directory_name, object_state):
     object_info.object_name = get_object_name(directory_name)
     object_info.is_b2c = is_b2c
     object_info.is_b2b = is_b2b
+    object_info.is_eiot = is_eiot
 
     object_info.security_phase_progress = object_state
     object_info.delivery_security_process_phase = current_phase

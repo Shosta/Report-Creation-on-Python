@@ -16,6 +16,7 @@ class ObjectInfo:
         self._security_phase_progress = ""
         self._is_b2b = False
         self._is_b2c = False
+        self._is_eiot = False
         self._person_in_charge = ""
         self._has_go_from_stakeholders = False
         self._result = ""
@@ -49,6 +50,10 @@ class ObjectInfo:
         return self._is_b2c
 
     @property
+    def is_eiot(self):
+        return self._is_eiot
+
+    @property
     def person_in_charge(self):
         return self._person_in_charge
 
@@ -56,6 +61,20 @@ class ObjectInfo:
     def has_go_from_stakeholders(self):
         '''A boolean value which informs if that object has a Go for the current Security Phase.'''
         return self._has_go_from_stakeholders
+
+    @property
+    def object_type(self):
+        '''A string that describes if the object is a B2C, a B2B or an EIoT one.'''
+        object_type = ""
+
+        if self._is_b2b:
+            object_type = "B2B"
+        elif self._is_b2c:
+            object_type = "B2C"
+        elif self._is_eiot:
+            object_type = "eIoT"
+    
+        return object_type
 
     @property
     def result(self):
@@ -98,6 +117,10 @@ class ObjectInfo:
     @is_b2c.setter
     def is_b2c(self, boolean):
         self._is_b2c = boolean
+
+    @is_eiot.setter
+    def is_eiot(self, boolean):
+        self._is_eiot = boolean
 
     @person_in_charge.setter
     def person_in_charge(self, string):
