@@ -16,7 +16,7 @@ def usage():
     Display the awaited command and arguments for the 'writereport.py'.
     '''
     print('Here is the default usage of that command:')
-    print('writereport.py -s <security_projects_folder>')
+    print('> writereport.py -s /Path/to/your/security/projects/folder')
     print('If no source folder is specified, the default source folder is the '
           'current folder.')
 
@@ -35,8 +35,9 @@ def __get_security_projects_folder(argv):
     import variables
     # Add default value.
     security_projects_folder = variables.SECURITY_PROJECTS_DIRPATH
+    #return security_projects_folder # For Debugging purpose only.
+
     try:
-        print(argv)
         opts, args = getopt.getopt(argv, "hs:", ["help", "security_projects_folder="])
     except getopt.GetoptError:
         print('Type \'writereport.py -h\' for help.')
