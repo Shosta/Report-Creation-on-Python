@@ -69,6 +69,7 @@ def objects_phase_counter(iot_objects_array):
         variables.NOT_EVALUATED_PHASE: 0,
         variables.NOT_STARTED_PHASE: 0,
         variables.IN_PROGRESS_PHASE: 0,
+        variables.ON_HOLD_PHASE: 0,
         variables.DONE_PHASE: 0
     }
     for iot_object in iot_objects_array:
@@ -76,6 +77,8 @@ def objects_phase_counter(iot_objects_array):
             objects_count_dictionnary[variables.DONE_PHASE] = objects_count_dictionnary[variables.DONE_PHASE] + 1
         elif iot_object.security_phase_progress == variables.IN_PROGRESS_PHASE:
             objects_count_dictionnary[variables.IN_PROGRESS_PHASE] = objects_count_dictionnary[variables.IN_PROGRESS_PHASE] + 1
+        elif iot_object.security_phase_progress == variables.ON_HOLD_PHASE:
+            objects_count_dictionnary[variables.ON_HOLD_PHASE] = objects_count_dictionnary[variables.ON_HOLD_PHASE] + 1
         elif iot_object.security_phase_progress == variables.NOT_STARTED_PHASE:
             objects_count_dictionnary[variables.NOT_STARTED_PHASE] = objects_count_dictionnary[variables.NOT_STARTED_PHASE] + 1
         elif iot_object.security_phase_progress == variables.NOT_EVALUATED_PHASE:
@@ -138,7 +141,7 @@ def write_line_to_report(project_name_string,
     # Add format to the Object State row => Red, Amber, Green.
     if object_state_string == variables.NOT_STARTED_PHASE or object_state_string == variables.NOT_EVALUATED_PHASE:
         excel_sheet.write(row, column+3, object_state_string, red_bold)
-    elif object_state_string == variables.IN_PROGRESS_PHASE:
+    elif object_state_string == variables.IN_PROGRESS_PHASE or object_state_string == variables.ON_HOLD_PHASE:
         excel_sheet.write(row, column+3, object_state_string, orange_bold)
     elif object_state_string == variables.DONE_PHASE:
         excel_sheet.write(row, column+3, object_state_string, green_bold)
@@ -252,11 +255,16 @@ def write_object_counter_to_report(excel_sheet, excel_workbook, iot_objects_arra
 
     excel_sheet.write_rich_string(
         'K8',
+        underline, 'Nombre d\'objets à l\'état \'On Hold\':',
+        bold, ' ' + str(objects_counter_dictionnary[variables.ON_HOLD_PHASE]))
+
+    excel_sheet.write_rich_string(
+        'K10',
         underline, 'Nombre d\'objets à l\'état \'Not Started\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.NOT_STARTED_PHASE]))
 
     excel_sheet.write_rich_string(
-        'K10',
+        'K12',
         underline, 'Nombre d\'objets à l\'état \'Not Evaluated\':',
         bold, ' ' + str(objects_counter_dictionnary[variables.NOT_EVALUATED_PHASE]))
 

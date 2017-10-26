@@ -112,7 +112,7 @@ class ObjectInfo:
 
     @security_phase_progress.setter
     def security_phase_progress(self, value):
-        '''It can be Not Started, In Progress, Done or Not Evaluated'''
+        '''It can be Not Started, In Progress, On Hold, Done or Not Evaluated'''
         self._security_phase_progress = value
 
     @is_b2b.setter

@@ -43,9 +43,10 @@ Your folder hierarchy should be as followed :
 The directory of project and object must be described as followed : 
  "**_Phase - Project Name - Object Name_**"
 
- The Phase must be one of the following : 
+ The Phase **must** be one of the following : 
  * Done
  * In Progress
+ * On Hold
  * Not Started
  * Not Evaluated
 
@@ -83,6 +84,8 @@ Refresh the bash shell environment:
 
 If you use the fish shell, just type that command:
 >`alias writereport 'python3 /path/to/writereport.py'`
+
+or check the documentation [here](https://fishshell.com/docs/current/commands.html#alias).
 
 
 :books: Doc : Add explanation on how to create an alias on macOS

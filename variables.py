@@ -27,6 +27,7 @@ IN_LIFE_PHASE = 'In Life'
 NOT_EVALUATED_PHASE = 'Not Evaluated'
 NOT_STARTED_PHASE = 'Not Started'
 IN_PROGRESS_PHASE = 'In Progress'
+ON_HOLD_PHASE = 'On Hold'
 DONE_PHASE = 'Done'
 
 SECURITY_MANAGER_NAME = 'Rémi Lavedrine'

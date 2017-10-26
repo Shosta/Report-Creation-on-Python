@@ -319,6 +319,7 @@ class SecurityReport:
         # Security Progress
         not_started_counter = 0
         in_progress_counter = 0
+        on_hold_counter = 0
         done_counter = 0
         not_evaluated_counter = 0
 
@@ -333,7 +334,7 @@ class SecurityReport:
             # Object type : B2B or B2C
             if iot_object.is_b2b:
                 b2b_counter = b2b_counter + 1
-            if iot_object.is_b2c:
+            elif iot_object.is_b2c:
                 b2c_counter = b2c_counter + 1
 
             # Risks            
@@ -343,25 +344,27 @@ class SecurityReport:
 
             # Security Progress
             import variables
-            if iot_object.security_phase_progress == variables.NOT_STARTED_PHASE:
-                not_started_counter = not_started_counter + 1
-            if iot_object.security_phase_progress == variables.IN_PROGRESS_PHASE:
-                in_progress_counter = in_progress_counter + 1
             if iot_object.security_phase_progress == variables.DONE_PHASE:
                 done_counter = done_counter + 1
-            if iot_object.security_phase_progress == variables.NOT_EVALUATED_PHASE:
+            elif iot_object.security_phase_progress == variables.IN_PROGRESS_PHASE:
+                in_progress_counter = in_progress_counter + 1
+            elif iot_object.security_phase_progress == variables.ON_HOLD_PHASE:
+                on_hold_counter = on_hold_counter + 1
+            elif iot_object.security_phase_progress == variables.NOT_EVALUATED_PHASE:
                 not_evaluated_counter = not_evaluated_counter + 1
+            elif iot_object.security_phase_progress == variables.NOT_STARTED_PHASE:
+                not_started_counter = not_started_counter + 1
 
             # Delivery Security Phase
             if iot_object.delivery_security_process_phase == variables.EVALUATION_PHASE:
                 in_evaluation_counter = in_evaluation_counter + 1
-            if iot_object.delivery_security_process_phase == variables.QUALIFICATION_PHASE:
+            elif iot_object.delivery_security_process_phase == variables.QUALIFICATION_PHASE:
                 in_qualification_counter = in_qualification_counter + 1
-            if iot_object.delivery_security_process_phase == variables.SECURITY_AUDIT_PHASE:
+            elif iot_object.delivery_security_process_phase == variables.SECURITY_AUDIT_PHASE:
                 in_audit_counter = in_audit_counter + 1
-            if iot_object.delivery_security_process_phase == variables.TESTING_PHASE:
+            elif iot_object.delivery_security_process_phase == variables.TESTING_PHASE:
                 in_testing_counter = in_testing_counter + 1
-            if iot_object.delivery_security_process_phase == variables.IN_LIFE_PHASE:
+            elif iot_object.delivery_security_process_phase == variables.IN_LIFE_PHASE:
                 on_the_market_counter = on_the_market_counter + 1
 
         # Object type : B2B or B2C
@@ -374,7 +377,7 @@ class SecurityReport:
         self.risks.light_risks = light_risks_counter
         self.risks.riskiestobjects_list = self.__get_riskiestobjects_list(iot_objects_array)
 
-        #SecurityPhaseProgress : Not Started, In Progress, Done, Not Evaluated
+        #SecurityPhaseProgress : Not Started, In Progress, On Hold, Done, Not Evaluated
         self.security_phase_progress.not_started_objects = not_started_counter
         self.security_phase_progress.in_progress_objects = in_progress_counter
         self.security_phase_progress.done_objects = done_counter
