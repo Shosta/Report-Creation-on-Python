@@ -264,6 +264,14 @@ def populate_objects_array(security_projects_folder):
                     variables.IN_PROGRESS_PHASE)
                 iot_objects_array.append(iot_object)
 
+            # Add all "On Hold" Objects to the result Array
+            if dirname.lower().startswith(variables.ON_HOLD_PHASE.lower()):
+                iot_object = create_object_info(
+                    dirpath,
+                    dirname,
+                    variables.ON_HOLD_PHASE)
+                iot_objects_array.append(iot_object)
+
             # Add all "Done" Objects to the result Array
             if dirname.lower().startswith(variables.DONE_PHASE.lower()):
                 iot_object = create_object_info(
