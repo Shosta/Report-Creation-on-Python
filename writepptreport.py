@@ -19,6 +19,7 @@ def __get_preceding_securityprogress_counters():
     A Tuple that has the Security Progress counters in the following order, 
     Not started,
     In progresss,
+    On Hold,
     Done,
     Not evaluated
     '''
@@ -35,12 +36,14 @@ def __get_preceding_securityprogress_counters():
         
         are_notstarted_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'NotStartedObjects', 'counter')
         are_inprogresss_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'InProgressObjects', 'counter')
+        are_onhold_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'OnHoldObjects', 'counter')
         are_done_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'DoneObjects', 'counter')
         are_notevaluated_counter = xml_utils.get_attribute_value(last_month_security_report_path, 'NotEvaluatedObjects', 'counter')
         
         
         return [are_notstarted_counter,
                 are_inprogresss_counter,
+                are_onhold_counter,
                 are_done_counter,
                 are_notevaluated_counter]
 
@@ -52,10 +55,11 @@ def __form_securityprogress_chart_data(security_report):
 
     chart_data = ChartData()
     chart_data.categories = ['July', 'August']
-    chart_data.add_series('Done', (last_month_securityprogress_counters[0], security_report.security_phase_progress.done_objects))
     chart_data.add_series('In Progress', (last_month_securityprogress_counters[1], security_report.security_phase_progress.in_progress_objects))
-    chart_data.add_series('Not Started', (last_month_securityprogress_counters[2], security_report.security_phase_progress.not_started_objects))
-    chart_data.add_series('Not Eval.', (last_month_securityprogress_counters[3], security_report.security_phase_progress.not_evaluated_objects))
+    chart_data.add_series('On Hold', (last_month_securityprogress_counters[2]], security_report.security_phase_progress.on_hold_objects))
+    chart_data.add_series('Done', (last_month_securityprogress_counters[3], security_report.security_phase_progress.done_objects))
+    chart_data.add_series('Not Started', (last_month_securityprogress_counters[0], security_report.security_phase_progress.not_started_objects))
+    chart_data.add_series('Not Eval.', (last_month_securityprogress_counters[4], security_report.security_phase_progress.not_evaluated_objects))
 
     return chart_data
 
@@ -184,6 +188,11 @@ def __draw_riskiest_objects_linechart(slide, security_report):
     moderaterisks_chartserie = []
     lightrisks_chartserie = []
 
+    riskiest_objects_names = []
+    object_lambda = list(map(lambda n: riskiestobjects_list[n].object_name, range (5)))
+    m = object_lambda
+    
+    
     
     # We have less than 5 objects so we take every objets and display it.
     if (length < 5):
