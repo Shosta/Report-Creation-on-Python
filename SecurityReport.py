@@ -294,25 +294,30 @@ class SecurityReport:
     @eiot_objects_count.setter
     def eiot_objects_count(self, value):
         self._eiot_objects_count = value
+
     @b2c_objects_count.setter
     def b2c_objects_count(self, value):
         self._b2c_objects_count = value
 
     def __get_riskiestobjects_list(self, iot_objects_array):
         import variables
+        # We copy the iot_objects_array variables so that we can remove items from it without worrying.
+        import copy
+        removable_iot_objects_array = copy.deepcopy(iot_objects_array)
+
         # 1. remove all Evaluation Phase objects.
-        for iot_object in iot_objects_array:
+        for iot_object in removable_iot_objects_array:
             if iot_object.delivery_security_process_phase == variables.EVALUATION_PHASE:
-                 iot_objects_array.remove(iot_object)
+                 removable_iot_objects_array.remove(iot_object)
 
         #2. Sort the new array by Highest risk counter
-        iot_objects_array.sort(key=lambda iot:iot._high_risks_counter, reverse=True)
+        removable_iot_objects_array.sort(key=lambda iot:iot._high_risks_counter, reverse=True)
 
         #3. Get the five first objects
-        if len(iot_objects_array) < 5:
-            return iot_objects_array
+        if len(removable_iot_objects_array) < 5:
+            return removable_iot_objects_array
         else:
-            return iot_objects_array[:5]
+            return removable_iot_objects_array[:5]
 
 
     def populate_member_values(self, iot_objects_array):
