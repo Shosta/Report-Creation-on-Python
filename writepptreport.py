@@ -56,7 +56,7 @@ def __form_securityprogress_chart_data(security_report):
     chart_data = ChartData()
     chart_data.categories = ['July', 'August']
     chart_data.add_series('In Progress', (last_month_securityprogress_counters[1], security_report.security_phase_progress.in_progress_objects))
-    chart_data.add_series('On Hold', (last_month_securityprogress_counters[2]], security_report.security_phase_progress.on_hold_objects))
+    chart_data.add_series('On Hold', (last_month_securityprogress_counters[2], security_report.security_phase_progress.on_hold_objects))
     chart_data.add_series('Done', (last_month_securityprogress_counters[3], security_report.security_phase_progress.done_objects))
     chart_data.add_series('Not Started', (last_month_securityprogress_counters[0], security_report.security_phase_progress.not_started_objects))
     chart_data.add_series('Not Eval.', (last_month_securityprogress_counters[4], security_report.security_phase_progress.not_evaluated_objects))
