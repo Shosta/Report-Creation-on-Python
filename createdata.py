@@ -239,6 +239,7 @@ def populate_objects_array(security_projects_folder):
     # for dirpath, dirnames in os.walk(variables.SECURITY_PROJECTS_DIRPATH):
     for dirpath, dirnames, files in os.walk(security_projects_folder):
 
+        dirnames.sort()
         for dirname in dirnames:
             # Add all "Not Evaluated" Objects to the result Array
             if dirname.lower().startswith(variables.NOT_EVALUATED_PHASE.lower()):
