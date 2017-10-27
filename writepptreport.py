@@ -9,6 +9,24 @@ from pptx.enum.chart import XL_CHART_TYPE
 from pptx.util import Cm
 import variables
 
+def __get_current_and_previous_month_names():
+    '''
+    Return a Tuple that contains the previous and current months names.
+
+    @return: {Previous month, Current month}
+    '''
+    
+    from datetime import datetime
+    import calendar
+    date = datetime.now()
+
+    _current_month = calendar.month_name[date.month]
+    _previous_month = calendar.month_name[date.month-1]
+    if date.month == 1:
+        _previous_month = calendar.month_name[12]
+    
+    return (_previous_month, _current_month)
+
 def __get_preceding_securityprogress_counters():
     '''
     Get the Security Progress objects counters and return a Tuple that contains them.
@@ -54,7 +72,10 @@ def __form_securityprogress_chart_data(security_report):
     last_month_securityprogress_counters = __get_preceding_securityprogress_counters()
 
     chart_data = ChartData()
-    chart_data.categories = ['July', 'August']
+
+    month_names = __get_current_and_previous_month_names()
+    chart_data.categories = [month_names[0], month_names[1]]
+
     chart_data.add_series('In Progress', (last_month_securityprogress_counters[1], security_report.security_phase_progress.in_progress_objects))
     chart_data.add_series('On Hold', (last_month_securityprogress_counters[2], security_report.security_phase_progress.on_hold_objects))
     chart_data.add_series('Done', (last_month_securityprogress_counters[3], security_report.security_phase_progress.done_objects))
@@ -107,7 +128,10 @@ def __form_deliveryprocess_chart_data(security_report):
     last_month_delivery_counters = __get_preceding_deliveryprocess_counters()
 
     chart_data = ChartData()
-    chart_data.categories = ['July', 'August']
+
+    month_names = __get_current_and_previous_month_names()
+    chart_data.categories = [month_names[0], month_names[1]]
+    
     chart_data.add_series('Eval.', (last_month_delivery_counters[0], security_report.delivery_security_process.evaluation_objects))
     chart_data.add_series('Qualif.', (last_month_delivery_counters[1], security_report.delivery_security_process.qualification_objects))
     chart_data.add_series('Tests', (last_month_delivery_counters[2], security_report.delivery_security_process.testing_objects))
