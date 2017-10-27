@@ -155,6 +155,14 @@ def __get_light_risks_counter(xml_file):
     return xml_utils.get_attribute_value(xml_file, 'Risks', 'lightRiskCounter')
 
 
+def __get_accepted_risks_counter(xml_file):
+    return xml_utils.get_attribute_value(xml_file, 'Risks', 'acceptedRiskCounter')
+
+
+def __get_solved_risks_counter(xml_file):
+    return xml_utils.get_attribute_value(xml_file, 'Risks', 'solvedRiskCounter')
+
+
 def create_object_info(directory_path, directory_name, object_state):
     '''
     Return the Object dictionnary from a 'directory_path',
@@ -181,17 +189,19 @@ def create_object_info(directory_path, directory_name, object_state):
     high_risks_counter = 0
     moderate_risks_counter = 0
     light_risks_counter = 0
+    accepted_risks_counter = 0
+    solved_risks_counter = 0
 
     from os import listdir
     from os.path import isfile, join
     onlyfiles = [f for f in listdir(os.path.join(directory_path, directory_name)) if isfile(join(os.path.join(directory_path, directory_name), f))]
     for cur_file in onlyfiles:
+        # The information are retrieved from the 'project_info.xml' file.
         if cur_file == 'project_info.xml':
             xml_file = join(directory_path, directory_name, cur_file)
             person_in_charge = get_person_in_charge(xml_file)
             result = get_result(xml_file)
             comment = get_comment(xml_file)
-
 
             # Get booleans.
             has_go_from_stakeholders = (get_go_no_go_result(xml_file) == 'Go')
@@ -203,6 +213,8 @@ def create_object_info(directory_path, directory_name, object_state):
             high_risks_counter = __get_high_risks_counter(xml_file)
             moderate_risks_counter = __get_moderate_risks_counter(xml_file)
             light_risks_counter = __get_light_risks_counter(xml_file)
+            accepted_risks_counter = __get_accepted_risks_counter(xml_file)
+            solved_risks_counter = __get_solved_risks_counter(xml_file)
 
 
     from IoTProjectInfo import ObjectInfo
@@ -226,6 +238,8 @@ def create_object_info(directory_path, directory_name, object_state):
     object_info.high_risks_counter = high_risks_counter
     object_info.moderate_risks_counter = moderate_risks_counter
     object_info.light_risks_counter = light_risks_counter
+    object_info.accepted_risks_counter = accepted_risks_counter
+    object_info.solved_risks_counter = solved_risks_counter
 
     return object_info
 
