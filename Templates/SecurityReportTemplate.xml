@@ -9,6 +9,7 @@
         </SecurityPhases>
         <ObjectsPhases>
             <InProgressObjects counter=""></InProgressObjects>
+            <OnHoldObjects counter=""></OnHoldObjects>
             <DoneObjects counter=""></DoneObjects>
             <NotStartedObjects counter=""></NotStartedObjects>
             <NotEvaluatedObjects counter=""></NotEvaluatedObjects>

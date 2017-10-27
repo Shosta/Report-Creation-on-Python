@@ -72,13 +72,13 @@ def count_in_progress(iot_objects_array):
 
 def count_on_hold(iot_objects_array):
     '''Return the number of ObjectInfo that are in a 'On Hold' step.'''
-    are_in_progress_counter = 0
+    are_on_hold_counter = 0
 
     for iot_object in iot_objects_array:
         if iot_object.security_phase_progress == variables.ON_HOLD_PHASE:
-            are_in_progress_counter = are_in_progress_counter + 1
+            are_on_hold_counter = are_on_hold_counter + 1
 
-    return are_in_progress_counter
+    return are_on_hold_counter
 
 
 def count_done(iot_objects_array):
