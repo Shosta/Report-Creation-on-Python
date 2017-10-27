@@ -92,14 +92,16 @@ class SecurityPhaseProgress:
 
     It is described with the following phases :
     1. Not Started
-    2. In Progress
-    3. Done
-    4. Not Evaluated
+    2. On Hold
+    3. In Progress
+    4. Done
+    5. Not Evaluated
     '''
 
     def __init__(self):
         # print('Delivery Phases')
         self._in_progress_objects = 0
+        self._on_hold_objects = 0
         self._done_objects = 0
         self._not_started_objects = 0
         self._not_evaluated_objects = 0
@@ -107,6 +109,10 @@ class SecurityPhaseProgress:
     @property
     def in_progress_objects(self):
         return self._in_progress_objects
+
+    @property
+    def on_hold_objects(self):
+        return self._on_hold_objects
 
     @property
     def done_objects(self):
@@ -123,6 +129,10 @@ class SecurityPhaseProgress:
     @in_progress_objects.setter
     def in_progress_objects(self, value):
         self._in_progress_objects = value
+
+    @on_hold_objects.setter
+    def on_hold_objects(self, value):
+        self._on_hold_objects = value
 
     @done_objects.setter
     def done_objects(self, value):
@@ -381,6 +391,7 @@ class SecurityReport:
         #SecurityPhaseProgress : Not Started, In Progress, On Hold, Done, Not Evaluated
         self.security_phase_progress.not_started_objects = not_started_counter
         self.security_phase_progress.in_progress_objects = in_progress_counter
+        self.security_phase_progress.on_hold_objects = on_hold_counter
         self.security_phase_progress.done_objects = done_counter
         self.security_phase_progress.not_evaluated_objects = not_evaluated_counter
 
@@ -426,6 +437,7 @@ class SecurityReport:
 
         # Replace the ObjectsPhases(=>SecurityPhaseProgress) childs attributes.
         xml_utils.replace_attribute_value(xml_dom, 'InProgressObjects', 'counter', str(self.security_phase_progress.in_progress_objects))
+        xml_utils.replace_attribute_value(xml_dom, 'OnHoldObjects', 'counter', str(self.security_phase_progress.on_hold_objects))
         xml_utils.replace_attribute_value(xml_dom, 'DoneObjects', 'counter', str(self.security_phase_progress.done_objects))
         xml_utils.replace_attribute_value(xml_dom, 'NotStartedObjects', 'counter', str(self.security_phase_progress.not_started_objects))
         xml_utils.replace_attribute_value(xml_dom, 'NotEvaluatedObjects', 'counter', str(self.security_phase_progress.not_evaluated_objects))
