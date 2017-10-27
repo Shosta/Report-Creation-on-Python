@@ -226,7 +226,7 @@ class SecurityReport:
         now = datetime.now()
         self._report_date = str(now.year) + "-" + str(now.month)
         self._total_objects_count = 0
-        self._b2b_objects_count = 0
+        self._others_objects_count = 0
         self._eiot_objects_count = 0
         self._b2c_objects_count = 0
 
@@ -256,8 +256,8 @@ class SecurityReport:
         return self._total_objects_count
 
     @property
-    def b2b_objects_count(self):
-        return self._b2b_objects_count
+    def others_objects_count(self):
+        return self._others_objects_count
 
     @property
     def eiot_objects_count(self):
@@ -287,9 +287,9 @@ class SecurityReport:
     def total_objects_count(self, value):
         self._total_objects_count = value
 
-    @b2b_objects_count.setter
-    def b2b_objects_count(self, value):
-        self._b2b_objects_count = value
+    @others_objects_count.setter
+    def others_objects_count(self, value):
+        self._others_objects_count = value
 
     @eiot_objects_count.setter
     def eiot_objects_count(self, value):
@@ -332,8 +332,8 @@ class SecurityReport:
         self.total_objects_count = len(iot_objects_array)
 
         # Define the counters.
-        # Object type : B2B or B2C
-        b2b_counter = 0
+        # Object type : Others or B2C
+        others_counter = 0
         eiot_counter = 0
         b2c_counter = 0
         # Risks
@@ -356,11 +356,11 @@ class SecurityReport:
         on_the_market_counter = 0
 
         for iot_object in iot_objects_array:
-            # Object type : B2B or B2C
+            # Object type : Others or B2C
             if iot_object.is_eiot:
                 eiot_counter = eiot_counter + 1
             elif iot_object.is_b2b:
-                b2b_counter = b2b_counter + 1
+                others_counter = others_counter + 1
             elif iot_object.is_b2c:
                 b2c_counter = b2c_counter + 1
 
@@ -394,8 +394,8 @@ class SecurityReport:
             elif iot_object.delivery_security_process_phase == variables.IN_LIFE_PHASE:
                 on_the_market_counter = on_the_market_counter + 1
 
-        # Object type : B2B, EIOT or B2C
-        self.b2b_objects_count = b2b_counter
+        # Object type : Others, EIOT or B2C
+        self.others_objects_count = others_counter
         self.eiot_objects_count = eiot_counter
         self.b2c_objects_count = b2c_counter
 
@@ -443,7 +443,7 @@ class SecurityReport:
         xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'date', str(self.report_date))
         xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'totalObjects', str(self.total_objects_count))
         xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'EIOTObjects', str(self.eiot_objects_count))
-        xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'B2BObjects', str(self.b2b_objects_count))
+        xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'OthersObjects', str(self.others_objects_count))
         xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'B2CObjects', str(self.b2c_objects_count))
 
         # Replace the SecurityPhases(=>DeliverySecurityProcess) childs attributes.

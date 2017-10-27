@@ -133,9 +133,9 @@ def is_b2c_object(xml_file):
     return xml_utils.get_attribute_value(xml_file, 'type', 'B2C') == 'true'
 
 
-def is_b2b_object(xml_file):
-    '''Return a boolean that indicates if the object is considered as a B2B one.'''
-    return xml_utils.get_attribute_value(xml_file, 'type', 'B2B') == 'true'
+def is_others_object(xml_file):
+    '''Return a boolean that indicates if the object is considered as a Others one.'''
+    return xml_utils.get_attribute_value(xml_file, 'type', 'OTHER') == 'true'
 
 
 def is_eiot_object(xml_file):
@@ -195,7 +195,7 @@ def create_object_info(directory_path, directory_name, object_state):
 
             # Get booleans.
             has_go_from_stakeholders = (get_go_no_go_result(xml_file) == 'Go')
-            is_b2b = is_b2b_object(xml_file)
+            is_b2b = is_others_object(xml_file)
             is_b2c = is_b2c_object(xml_file)
             is_eiot = is_eiot_object(xml_file)
 

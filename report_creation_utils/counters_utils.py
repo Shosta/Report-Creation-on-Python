@@ -4,15 +4,15 @@ Counter Helpers functions
 import variables
 
 
-def count_b2b_objects(iot_objects_array):
+def count_others_objects(iot_objects_array):
     '''Return the number of b2b object in the iot_object_array'''
-    are_b2b_counter = 0
+    are_others_counter = 0
 
     for iot_object in iot_objects_array:
         if iot_object.is_b2b:
-            are_b2b_counter = are_b2b_counter + 1
+            are_others_counter = are_others_counter + 1
 
-    return are_b2b_counter
+    return are_others_counter
 
 
 def count_b2c_objects(iot_objects_array):
