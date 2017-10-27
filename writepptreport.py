@@ -316,9 +316,9 @@ def __write_dashboard_slide(presentation, security_report):
                 if shape.placeholder_format.idx == 13:
                     shape.text = str(last_month_risks[1])
 
-                # Total B2B Objects
+                # Total Others Objects
                 if shape.placeholder_format.idx == 14:
-                    shape.text = str(security_report.b2b_objects_count)
+                    shape.text = str(security_report.others_objects_count)
 
                 # Total B2C Objects
                 if shape.placeholder_format.idx == 15:

@@ -65,11 +65,11 @@ class ObjectInfo:
 
     @property
     def object_type(self):
-        '''A string that describes if the object is a B2C, a B2B or an EIoT one.'''
+        '''A string that describes if the object is a B2C, an Other or an EIoT one.'''
         object_type = ""
 
         if self._is_b2b:
-            object_type = "B2B"
+            object_type = "Others"
         elif self._is_b2c:
             object_type = "B2C"
         elif self._is_eiot:
