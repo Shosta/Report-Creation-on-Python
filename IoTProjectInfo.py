@@ -97,6 +97,14 @@ class ObjectInfo:
     def light_risks_counter(self):
         return self._light_risks_counter
 
+    @property
+    def accepted_risks_counter(self):
+        return self._accepted_risks_counter
+
+    @property
+    def solved_risks_counter(self):
+        return self._solved_risks_counter
+
     @project_name.setter
     def project_name(self, value):
         self._project_name = value
@@ -154,3 +162,11 @@ class ObjectInfo:
     @light_risks_counter.setter
     def light_risks_counter(self, value):
         self._light_risks_counter = int(value)
+
+    @accepted_risks_counter.setter
+    def accepted_risks_counter(self, value):
+        self._accepted_risks_counter = int(value)
+
+    @solved_risks_counter.setter
+    def solved_risks_counter(self, value):
+        self._solved_risks_counter = int(value)
