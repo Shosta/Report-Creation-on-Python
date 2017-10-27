@@ -227,6 +227,7 @@ class SecurityReport:
         self._report_date = str(now.year) + "-" + str(now.month)
         self._total_objects_count = 0
         self._b2b_objects_count = 0
+        self._eiot_objects_count = 0
         self._b2c_objects_count = 0
 
 
@@ -259,6 +260,10 @@ class SecurityReport:
         return self._b2b_objects_count
 
     @property
+    def eiot_objects_count(self):
+        return self._eiot_objects_count
+
+    @property
     def b2c_objects_count(self):
         return self._b2c_objects_count
 
@@ -286,6 +291,9 @@ class SecurityReport:
     def b2b_objects_count(self, value):
         self._b2b_objects_count = value
 
+    @eiot_objects_count.setter
+    def eiot_objects_count(self, value):
+        self._eiot_objects_count = value
     @b2c_objects_count.setter
     def b2c_objects_count(self, value):
         self._b2c_objects_count = value
@@ -321,6 +329,7 @@ class SecurityReport:
         # Define the counters.
         # Object type : B2B or B2C
         b2b_counter = 0
+        eiot_counter = 0
         b2c_counter = 0
         # Risks
         high_risks_counter = 0
@@ -343,7 +352,9 @@ class SecurityReport:
 
         for iot_object in iot_objects_array:
             # Object type : B2B or B2C
-            if iot_object.is_b2b:
+            if iot_object.is_eiot:
+                eiot_counter = eiot_counter + 1
+            elif iot_object.is_b2b:
                 b2b_counter = b2b_counter + 1
             elif iot_object.is_b2c:
                 b2c_counter = b2c_counter + 1
@@ -378,11 +389,12 @@ class SecurityReport:
             elif iot_object.delivery_security_process_phase == variables.IN_LIFE_PHASE:
                 on_the_market_counter = on_the_market_counter + 1
 
-        # Object type : B2B or B2C
+        # Object type : B2B, EIOT or B2C
         self.b2b_objects_count = b2b_counter
+        self.eiot_objects_count = eiot_counter
         self.b2c_objects_count = b2c_counter
 
-        # Risks : High risks or Light risks
+        # Risks : High, Moderate or Light risks
         self.risks.high_risks = high_risks_counter
         self.risks.moderate_risks = moderate_risks_counter
         self.risks.light_risks = light_risks_counter
@@ -425,6 +437,7 @@ class SecurityReport:
         # Replace the SecurityReport node attributes.
         xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'date', str(self.report_date))
         xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'totalObjects', str(self.total_objects_count))
+        xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'EIOTObjects', str(self.eiot_objects_count))
         xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'B2BObjects', str(self.b2b_objects_count))
         xml_utils.replace_attribute_value(xml_dom, 'SecurityReport', 'B2CObjects', str(self.b2c_objects_count))
 
