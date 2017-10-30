@@ -456,6 +456,13 @@ class SecurityReport:
 
 
     def save_to_file(self):
+        '''
+        Write the SecurityReport object to an xml file for persistence.
+        It just fills the SecurityReport members values to a xml file template that has the proper xml skeleton.
+
+        The skeleton file is located at "./Templates/SecurityReportTemplate.xml".abs
+        The result file is located in the "target folder/Reports History/yyyy-mm - SecurityReport.xml".
+        '''
         # Open the SecurityReport Templates
         from xml.dom import minidom
         import variables
