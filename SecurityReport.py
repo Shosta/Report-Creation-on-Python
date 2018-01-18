@@ -52,6 +52,8 @@ class Risks:
         self._high_risks = 0
         self._moderate_risks = 0
         self._light_risks = 0
+        self._accepted_risks = 0
+        self._solved_risks = 0
         self._riskiestobjects_list = []
 
     @property
@@ -65,6 +67,14 @@ class Risks:
     @property
     def light_risks(self):
         return self._light_risks
+
+    @property
+    def accepted_risks(self):
+        return self._accepted_risks
+
+    @property
+    def solved_risks(self):
+        return self._solved_risks
 
     @property
     def riskiestobjects_list(self):
@@ -81,6 +91,14 @@ class Risks:
     @light_risks.setter
     def light_risks(self, value):
         self._light_risks = value
+
+    @accepted_risks.setter
+    def accepted_risks(self, value):
+        self._accepted_risks = value
+
+    @solved_risks.setter
+    def solved_risks(self, value):
+        self._solved_risks = value
 
     @riskiestobjects_list.setter
     def riskiestobjects_list(self, value):
@@ -340,6 +358,8 @@ class SecurityReport:
         high_risks_counter = 0
         moderate_risks_counter = 0
         light_risks_counter = 0
+        accepted_risks_counter = 0
+        solved_risks_counter = 0
 
         # Security Progress
         not_started_counter = 0
@@ -368,6 +388,8 @@ class SecurityReport:
             high_risks_counter = high_risks_counter + iot_object.high_risks_counter
             moderate_risks_counter = moderate_risks_counter + iot_object.moderate_risks_counter
             light_risks_counter = light_risks_counter + iot_object.light_risks_counter
+            accepted_risks_counter = accepted_risks_counter + iot_object.accepted_risks_counter
+            solved_risks_counter = solved_risks_counter + iot_object.solved_risks_counter
 
             # Security Progress
             import variables
@@ -403,6 +425,8 @@ class SecurityReport:
         self.risks.high_risks = high_risks_counter
         self.risks.moderate_risks = moderate_risks_counter
         self.risks.light_risks = light_risks_counter
+        self.risks.accepted_risks = accepted_risks_counter
+        self.risks.solved_risks = solved_risks_counter
         self.risks.riskiestobjects_list = self.__get_riskiestobjects_list(iot_objects_array)
 
         #SecurityPhaseProgress : Not Started, In Progress, On Hold, Done, Not Evaluated
@@ -432,6 +456,13 @@ class SecurityReport:
 
 
     def save_to_file(self):
+        '''
+        Write the SecurityReport object to an xml file for persistence.
+        It just fills the SecurityReport members values to a xml file template that has the proper xml skeleton.
+
+        The skeleton file is located at "./Templates/SecurityReportTemplate.xml".abs
+        The result file is located in the "target folder/Reports History/yyyy-mm - SecurityReport.xml".
+        '''
         # Open the SecurityReport Templates
         from xml.dom import minidom
         import variables
@@ -464,6 +495,8 @@ class SecurityReport:
         xml_utils.replace_attribute_value(xml_dom, 'HighRisks', 'counter', str(self.risks.high_risks))
         xml_utils.replace_attribute_value(xml_dom, 'ModerateRisks', 'counter', str(self.risks.moderate_risks))
         xml_utils.replace_attribute_value(xml_dom, 'LightRisks', 'counter', str(self.risks.light_risks))
+        xml_utils.replace_attribute_value(xml_dom, 'AcceptedRisks', 'counter', str(self.risks.light_risks))
+        xml_utils.replace_attribute_value(xml_dom, 'SolvedRisks', 'counter', str(self.risks.light_risks))
         
         # Replace the Highlights childs values
         xml_utils.replace_element_value(xml_dom, 'MonthlyHighlights', str(self.highlights.monthly_highlights))

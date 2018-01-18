@@ -18,6 +18,8 @@
             <HighRisks counter=""></HighRisks>
             <ModerateRisks counter=""></ModerateRisks>
             <LightRisks counter=""></LightRisks>
+            <AcceptedRisks counter=""></AcceptedRisks>
+            <SolvedRisks counter=""></SolvedRisks>
         </Risks>
         <Highlights>
             <MonthlyHighlights>

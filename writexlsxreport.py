@@ -149,9 +149,9 @@ def write_line_to_report(project_name_string,
     excel_sheet.write(row, column+4, person_in_charge, border)
 
     # Add format to the Result row => Red, Amber, Green.
-    if result_string.upper().find('HIGH') != -1 and result_string != '':
+    if result_string.upper().find('HIGH RISKS') != -1 and result_string != '':
         excel_sheet.write(row, column+5, result_string, red_bold)
-    elif result_string.upper().find('LIGHT') != -1 and result_string != '':
+    elif result_string.upper().find('MODERATE RISKS') != -1 and result_string != '':
         excel_sheet.write(row, column+5, result_string, orange_bold)
     else:
         excel_sheet.write(row, column+5, result_string, green_bold)
@@ -196,15 +196,26 @@ def write_object_status_to_report(iot_object_info,
     .SecurityProcessPhase
     .ObjectState
     .PersonInCharge
-    .Result
+    .Result and a sum up of the risks counters
     .GoNoGo
-    .Object Type"""
+    .Object Type
+    .Comment"""
+    # Add the Risks related information to the "result".
+    result = iot_object_info.result
+    if iot_object_info.result != "":
+        result = "".join([iot_object_info.result,
+                 "\nHigh : ", str(iot_object_info.high_risks_counter),
+                 "; Medium : ", str(iot_object_info.moderate_risks_counter),
+                 "; Light : ", str(iot_object_info.light_risks_counter),
+                 "=> Solved : ", str(iot_object_info.solved_risks_counter),
+                 "; Accepted : ", str(iot_object_info.accepted_risks_counter)])
+
     write_line_to_report(iot_object_info.project_name,
                          iot_object_info.object_name,
                          iot_object_info.delivery_security_process_phase,
                          iot_object_info.security_phase_progress,
                          iot_object_info.person_in_charge,
-                         iot_object_info.result,
+                         result,
                          iot_object_info.has_go_from_stakeholders,
                          iot_object_info.object_type,
                          iot_object_info.comment,
