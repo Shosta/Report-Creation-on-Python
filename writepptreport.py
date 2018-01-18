@@ -101,7 +101,15 @@ def __get_preceding_deliveryprocess_counters():
     '''
     from datetime import datetime
     date = datetime.now()
-    last_month = date.replace(date.year, date.month-1, 1)
+    
+    year = date.year
+    month = date.month-1
+
+    if date.month-1 == 0:
+        year = date.year-1
+        month = 12
+
+    last_month = date.replace(year, month, 1)
 
     preceding_report_file_name = str(last_month.year) + '-' + str(last_month.month) + variables.SECURITY_REPORT_FILE_NAME
     
@@ -280,7 +288,15 @@ def __get_preceding_risks_counters():
     '''
     from datetime import datetime
     date = datetime.now()
-    last_month = date.replace(date.year, date.month-1, 1)
+    
+    year = date.year
+    month = date.month-1
+
+    if date.month-1 == 0:
+        year = date.year-1
+        month = 12
+
+    last_month = date.replace(year, month, 1)
 
     preceding_report_file_name = str(last_month.year) + '-' + str(last_month.month) + variables.SECURITY_REPORT_FILE_NAME
     
@@ -340,13 +356,17 @@ def __write_dashboard_slide(presentation, security_report):
                 if shape.placeholder_format.idx == 13:
                     shape.text = str(last_month_risks[1])
 
-                # Total Others Objects
+                # Total eIoT Objects
                 if shape.placeholder_format.idx == 14:
-                    shape.text = str(security_report.others_objects_count)
+                    shape.text = str(security_report.eiot_objects_count)
 
                 # Total B2C Objects
                 if shape.placeholder_format.idx == 15:
                     shape.text = str(security_report.b2c_objects_count)
+
+                # Total Others Objects
+                if shape.placeholder_format.idx == 20:
+                    shape.text = str(security_report.others_objects_count)
 
     # Write Chart on slide
     __write_deliveryprocess_chart(slide, security_report)
