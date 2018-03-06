@@ -107,3 +107,7 @@ ENV/
 .mypy_cache/
 
 CreateReviewFile\.py
+
+\.vscode/settings\.json
+
+Templates/~\$SecurityReport\.potx
