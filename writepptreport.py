@@ -319,7 +319,7 @@ def __get_preceding_risks_counters():
 def __write_dashboard_slide(presentation, security_report):
     from SecurityReport import SecurityReport, Risks
     # We choose the first slide of the presentation. Dashboard Slide.
-    slide = presentation.slides[0]
+    slide = presentation.slides[1]
     last_month_risks = __get_preceding_risks_counters()
 
     for shape in slide.shapes:
@@ -354,13 +354,17 @@ def __write_dashboard_slide(presentation, security_report):
 
                 # Light Risks last month
                 if shape.placeholder_format.idx == 13:
-                    shape.text = str(last_month_risks[1])
+                    shape.text = str(last_month_risks[2])
 
                 # Total eIoT Objects
                 if shape.placeholder_format.idx == 14:
                     shape.text = str(security_report.eiot_objects_count)
 
                 # Total B2C Objects
+                if shape.placeholder_format.idx == 15:
+                    shape.text = str(security_report.b2c_objects_count)
+                
+                # Total eIoT Objects
                 if shape.placeholder_format.idx == 15:
                     shape.text = str(security_report.b2c_objects_count)
 
@@ -376,7 +380,7 @@ def __write_dashboard_slide(presentation, security_report):
 
 def __write_highlights_slide(presentation, security_report):
     # We choose the second slide of the presentation. Highlights Slide.
-    slide = presentation.slides[1]
+    slide = presentation.slides[2]
 
     for shape in slide.shapes:
         if shape.is_placeholder:
