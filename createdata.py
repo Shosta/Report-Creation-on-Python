@@ -235,11 +235,11 @@ def create_object_info(directory_path, directory_name, object_state):
     object_info.result = result
     object_info.comment = comment
 
-    object_info.high_risks_counter = high_risks_counter
-    object_info.moderate_risks_counter = moderate_risks_counter
-    object_info.light_risks_counter = light_risks_counter
-    object_info.accepted_risks_counter = accepted_risks_counter
-    object_info.solved_risks_counter = solved_risks_counter
+    object_info.high_risks_counter = int(high_risks_counter)
+    object_info.moderate_risks_counter = int(moderate_risks_counter)
+    object_info.light_risks_counter = int(light_risks_counter)
+    object_info.accepted_risks_counter = int(accepted_risks_counter)
+    object_info.solved_risks_counter = int(solved_risks_counter)
 
     return object_info
 
