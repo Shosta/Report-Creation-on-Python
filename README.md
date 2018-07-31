@@ -90,3 +90,9 @@ or check the documentation [here](https://fishshell.com/docs/current/commands.ht
 
 :books: Doc : Add explanation on how to create an alias on macOS
 In order for the user to have a shortcut to the app and don't require to enter the all path the 'writereport.py' python file.
+---
+
+<center>
+Released under the <a href="LICENSE.md">Mozilla Public License, version 2.0</a><br>
+Made with :heart: in Paris :fr:
+</center>
